@@ -111,6 +111,7 @@ class Configurator extends IPSModule
                 if (fnmatch('*Flora-*', $data->Payload)) {
                     $Payload = json_decode($data->Payload, true);
                     unset($Payload['Time']); //Time aus dem Array entfernen
+                    unset($Payload['TempUnit']); //Time aus dem Array entfernen
                     $this->SetBuffer('Devices', json_encode($Payload));
                     $this->ReloadForm();
                 }
