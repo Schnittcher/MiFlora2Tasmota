@@ -1,0 +1,12 @@
+{
+    "id": "{59E9E2A6-C9AF-EE2F-407C-1B946D6B8FBC}",
+    "name": "Configurator",
+    "type": 4,
+    "vendor": "",
+    "aliases": ["MiFlora Konfigurator"],
+	"parentRequirements": ["{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}"],
+	"childRequirements": [],
+	"implemented": ["{7F7632D9-FA40-4F38-8DEA-C83CD4325A32}"],
+    "prefix": "M2T",
+    "url": "https://deinsmarthome.info"
+}

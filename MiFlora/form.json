@@ -1,0 +1,22 @@
+{
+    "elements":
+    [
+        {
+            "type": "ValidationTextBox",
+            "name": "Topic",
+            "caption": "Tasmota MQTT Topic"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "FullTopic",
+            "caption": "Full Topic"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "Devicename",
+            "caption": "Devicename"
+        }
+    ],
+    "actions": [],
+    "status": []
+}

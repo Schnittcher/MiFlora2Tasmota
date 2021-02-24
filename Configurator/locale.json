@@ -1,0 +1,13 @@
+{
+    "translations": {
+        "de": {
+            "MiFlora Devices":"MiFlora Geräte",
+            "Devicename": "Gerätename",
+            "Temperature": "Temperatur",
+            "Illuminance": "Beleuchtungsstärke",
+            "Moisture": "Feuchtigkeit",
+            "Fertility": "Fruchtbarkeit",
+            "RSSI": "RSSI"
+        }
+    }
+}

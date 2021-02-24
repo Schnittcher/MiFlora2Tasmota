@@ -1,0 +1,12 @@
+{
+    "id": "{A896C08C-B894-B10B-062D-8845BC7EC651}",
+    "name": "MiFlora2Tasmota",
+    "author": "Kai Schnittcher",
+    "url": "https://deinsmarthome.info",
+    "compatibility": {
+        "version": "5.4"
+    },
+    "version": "1.0",
+    "build": 0,
+    "date": 0
+}

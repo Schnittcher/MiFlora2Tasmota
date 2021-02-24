@@ -1,0 +1,62 @@
+{
+    "elements":
+    [
+        {
+            "type": "ValidationTextBox",
+            "name": "Topic",
+            "caption": "Tasmota MQTT Topic"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "FullTopic",
+            "caption": "Full Topic"
+        }
+    ],
+    "actions":
+    [
+        {
+            "type": "Configurator",
+            "name": "Configurator",
+            "caption": "MiFlora Devices",
+            "delete": true,
+            "sort": {
+              "column": "name",
+              "direction": "ascending"
+            },
+            "columns": [
+              {
+                "caption": "Devicename",
+                "name": "name",
+                "width": "auto"
+              },
+              {
+                "caption": "Temperature",
+                "name": "Temperature",
+                "width": "100px"
+              },
+              {
+                "caption": "Illuminance",
+                "name": "Illuminance",
+                "width": "150px"
+              },
+              {
+                "caption": "Moisture",
+                "name": "Moisture",
+                "width": "150px"
+              },
+              {
+                "caption": "Fertility",
+                "name": "Fertility",
+                "width": "150px"
+              },
+              {
+                "caption": "RSSI",
+                "name": "RSSI",
+                "width": "150px"
+              }
+            ],
+            "values": []
+          }
+    ],
+    "status": []
+}
