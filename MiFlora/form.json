@@ -1,33 +1,46 @@
 {
-    "elements":
-    [
-        {
-            "type": "ValidationTextBox",
-            "name": "Topic",
-            "caption": "Tasmota MQTT Topic"
-        },
-        {
-            "type": "ValidationTextBox",
-            "name": "FullTopic",
-            "caption": "Full Topic"
-        },
-        {
-            "type": "ValidationTextBox",
-            "name": "Devicename",
-            "caption": "Devicename"
-        },
-        {
-            "type":"ExpansionPanel",
-            "caption":"Expert Settings",
-            "items":[
-               {
-                  "type":"CheckBox",
-                  "name":"ExpertFilter",
-                  "caption":"Filter Data with Devicename"
-               }
-            ]
-         }
+    "elements":[
+       {
+          "type":"ValidationTextBox",
+          "name":"Topic",
+          "caption":"Tasmota MQTT Topic"
+       },
+       {
+          "type":"ValidationTextBox",
+          "name":"FullTopic",
+          "caption":"Full Topic"
+       },
+       {
+          "type":"ValidationTextBox",
+          "name":"Devicename",
+          "caption":"Devicename"
+       },
+       {
+          "type":"ExpansionPanel",
+          "caption":"Expert Settings",
+          "items":[
+             {
+                "type":"CheckBox",
+                "name":"MAC-Address",
+                "caption":"Show MAC-Address Variable"
+             },
+             {
+                "type":"CheckBox",
+                "name":"Firmware",
+                "caption":"Show Firmware Variable"
+             },
+             {
+                "type":"CheckBox",
+                "name":"ExpertFilter",
+                "caption":"Filter Data with Devicename"
+             }
+          ]
+       }
     ],
-    "actions": [],
-    "status": []
-}
+    "actions":[
+       
+    ],
+    "status":[
+       
+    ]
+ }

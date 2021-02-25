@@ -16,6 +16,8 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
             $this->RegisterPropertyString('Topic', '');
             $this->RegisterPropertyString('FullTopic', '%prefix%/%topic%');
             $this->RegisterPropertyString('Devicename', '');
+            $this->RegisterPropertyBoolean('MAC-Address', false);
+            $this->RegisterPropertyBoolean('Firmware', false);
             $this->RegisterPropertyBoolean('ExpertFilter', false);
 
             $this->RegisterVariableFloat('Temperature', $this->Translate('Temperature'), '~Temperature');
@@ -30,6 +32,7 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
             IPS_SetVariableProfileText('M2T.Fertility', '', ' us/cm');
 
             $this->RegisterVariableInteger('Fertility', $this->Translate('Fertility'), 'M2T.Fertility');
+            $this->RegisterVariableInteger('Battery', $this->Translate('Battery'), '~Battery.100');
             $this->RegisterVariableInteger('RSSI', $this->Translate('RSSI'), '');
         }
 
@@ -43,7 +46,10 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
         {
             //Never delete this line!
             parent::ApplyChanges();
-            $this->SendDebug(__FUNCTION__ . ' FullTopic', $this->ReadPropertyString('FullTopic'), 0);
+
+            $this->MaintainVariable('MAC', $this->Translate('MAC-Address'), 3, '', 0, $this->ReadPropertyBoolean('MAC-Address') == true);
+            $this->MaintainVariable('Firmware', $this->Translate('Firmware'), 3, '', 0, $this->ReadPropertyBoolean('Firmware') == true);
+
             $ReceiveDataFilter = $this->ReadPropertyString('Topic');
             if ($this->ReadPropertyBoolean('ExpertFilter')) {
                 $ReceiveDataFilter = $this->ReadPropertyString('Devicename');
@@ -64,6 +70,13 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
                     $this->SetValue('Illuminance', $Device['Illuminance']);
                     $this->SetValue('Moisture', $Device['Moisture']);
                     $this->SetValue('Fertility', $Device['Fertility']);
+                    $this->SetValue('Battery', $Device['Battery']);
+                    if ($this->ReadPropertyBoolean('MAC-Address')) {
+                        $this->SetValue('MAC', $Device['mac']);
+                    }
+                    if ($this->ReadPropertyBoolean('Firmware')) {
+                        $this->SetValue('Firmware', $Device['Firmware']);
+                    }
                     $this->SetValue('RSSI', $Device['RSSI']);
                 }
             }

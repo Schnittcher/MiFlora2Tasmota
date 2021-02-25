@@ -9,6 +9,7 @@
             "Illuminance": "Beleuchtungsstärke",
             "Moisture": "Feuchtigkeit",
             "Fertility": "Fruchtbarkeit",
+            "Battery": "Battery",
             "RSSI": "RSSI",
             "Data Filter": "Daten Filter",
             "Expert Settings": "Experten Einstellungen"

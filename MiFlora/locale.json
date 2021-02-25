@@ -2,12 +2,17 @@
     "translations": {
         "de": {
             "Devicename": "Gerätename",
-            "Filter Data with Devicename": "Filtere Daten nach Gerätename",
             "Expert Settings": "Experten Einstellungen",
+            "Filter Data with Devicename": "Filtere Daten nach Gerätename",
+            "Show MAC-Address Variable": "Zeige MAC-Address Variable",
+            "Show Firmware Variable": "Zeige Firmware Variable",
             "Temperature": "Temperatur",
             "Illuminance": "Beleuchtungsstärke",
             "Moisture": "Feuchtigkeit",
             "Fertility": "Fruchtbarkeit",
+            "Battery": "Batterie",
+            "MAC-Address": "MAC-Adresse",
+            "Firmware": "Firmware",
             "RSSI": "RSSI"
         }
     }

@@ -69,6 +69,16 @@
               "width":"150px"
            },
            {
+            "caption":"Firmware",
+            "name":"Firmware",
+            "width":"150px"
+           },
+           {
+            "caption":"Battery",
+            "name":"Battery",
+            "width":"150px"
+           },
+           {
               "caption":"RSSI",
               "name":"RSSI",
               "width":"150px"

@@ -86,6 +86,18 @@ class Configurator extends IPSModule
                 $Fertility = '';
             }
 
+            if (array_key_exists('Firmware', $Device)) {
+                $Firmware = $Device['Firmware'];
+            } else {
+                $Firmware = '';
+            }
+
+            if (array_key_exists('Battery', $Device)) {
+                $Battery = $Device['Battery'] . ' %';
+            } else {
+                $Battery = '';
+            }
+
             if (array_key_exists('RSSI', $Device)) {
                 $RSSI = $Device['RSSI'];
             } else {
@@ -105,6 +117,8 @@ class Configurator extends IPSModule
                 'Illuminance'                    => $Illuminance,
                 'Moisture'                       => $Moisture,
                 'Fertility'                      => $Fertility,
+                'Firmware'                       => $Firmware,
+                'Battery'                        => $Battery,
                 'RSSI'                           => $RSSI,
                 'instanceID'                     => $instanceID
             ];
@@ -146,6 +160,7 @@ class Configurator extends IPSModule
                         $Devices[$key]['Illuminance'] = $Value['Illuminance'];
                         $Devices[$key]['Moisture'] = $Value['Moisture'];
                         $Devices[$key]['Fertility'] = $Value['Fertility'];
+                        $Devices[$key]['Firmware'] = $Value['Firmware'];
                         $Devices[$key]['Battery'] = $Value['Battery'];
                         $Devices[$key]['RSSI'] = $Value['RSSI'];
                     }
