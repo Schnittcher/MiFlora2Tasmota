@@ -108,7 +108,7 @@ class Configurator extends IPSModule
 
         if (property_exists($data, 'Topic')) {
             if (fnmatch('*/SENSOR', $data->Topic)) {
-                if (fnmatch('*Flora-*', $data->Payload)) {
+                if (fnmatch('*Flora*', $data->Payload)) {
                     $Payload = json_decode($data->Payload, true);
                     unset($Payload['Time']); //Time aus dem Array entfernen
                     unset($Payload['TempUnit']); //Time aus dem Array entfernen
