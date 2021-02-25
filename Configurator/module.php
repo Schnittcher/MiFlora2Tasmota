@@ -14,6 +14,7 @@ class Configurator extends IPSModule
         parent::Create();
         $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
         $this->RegisterPropertyString('Topic', '');
+        $this->RegisterPropertyString('Filter', '');
         $this->RegisterPropertyString('FullTopic', '%prefix%/%topic%');
         $this->SetBuffer('Devices', '{}');
     }
@@ -29,10 +30,14 @@ class Configurator extends IPSModule
         //Never delete this line!
         parent::ApplyChanges();
         $this->SendDebug(__FUNCTION__ . ' FullTopic', $this->ReadPropertyString('FullTopic'), 0);
-        $topic = $this->FilterFullTopicReceiveData();
-        $this->SendDebug(__FUNCTION__ . ' Filter FullTopic', $topic, 0);
 
-        $this->SetReceiveDataFilter('.*' . $topic . '.*');
+        $ReceiveDataFilter = $this->ReadPropertyString('Topic');
+
+        //Expert Settings
+        if ($this->ReadPropertyString('Filter') != '') {
+            $ReceiveDataFilter = $this->ReadPropertyString('Filter');
+        }
+        $this->SetReceiveDataFilter('.*' . $ReceiveDataFilter . '.*');
     }
 
     public function GetConfigurationForm()
@@ -45,26 +50,38 @@ class Configurator extends IPSModule
         foreach ($Devices as $key => $Device) {
             $instanceID = $this->getDeviceInstances($key);
 
+            if (array_key_exists('mac', $Device)) {
+                $mac = $Device['mac'];
+            } else {
+                $mac = '';
+            }
+
+            if (array_key_exists('MQTTTopic', $Device)) {
+                $MQTTTopic = $Device['MQTTTopic'];
+            } else {
+                $MQTTTopic = '';
+            }
+
             if (array_key_exists('Temperature', $Device)) {
-                $Temperature = $Device['Temperature'];
+                $Temperature = $Device['Temperature'] . ' ℃';
             } else {
                 $Temperature = '';
             }
 
             if (array_key_exists('Illuminance', $Device)) {
-                $Illuminance = $Device['Illuminance'];
+                $Illuminance = $Device['Illuminance'] . ' lx';
             } else {
                 $Illuminance = '';
             }
 
             if (array_key_exists('Moisture', $Device)) {
-                $Moisture = $Device['Moisture'];
+                $Moisture = $Device['Moisture'] . ' %';
             } else {
                 $Moisture = '';
             }
 
             if (array_key_exists('Fertility', $Device)) {
-                $Fertility = $Device['Fertility'];
+                $Fertility = $Device['Fertility'] . ' us/cm';
             } else {
                 $Fertility = '';
             }
@@ -75,8 +92,15 @@ class Configurator extends IPSModule
                 $RSSI = '';
             }
 
+            $ValueExpertFilter = false;
+            if ($this->ReadPropertyString('Filter') != '') {
+                $ValueExpertFilter = true;
+            }
+
             $AddValue = [
                 'name'                           => $key,
+                'mac'                            => $mac,
+                'MQTTTopic'                      => $MQTTTopic,
                 'Temperature'                    => $Temperature,
                 'Illuminance'                    => $Illuminance,
                 'Moisture'                       => $Moisture,
@@ -92,6 +116,7 @@ class Configurator extends IPSModule
                         'Topic'             => $this->ReadPropertyString('Topic'),
                         'FullTopic'         => $this->ReadPropertyString('FullTopic'),
                         'Devicename'        => $key,
+                        'ExpertFilter'      => $ValueExpertFilter
                     ]
                 ];
 
@@ -109,11 +134,22 @@ class Configurator extends IPSModule
         if (property_exists($data, 'Topic')) {
             if (fnmatch('*/SENSOR', $data->Topic)) {
                 if (fnmatch('*Flora*', $data->Payload)) {
+                    $FloraESPTopic = $this->getTasmotaTopic($data->Topic);
                     $Payload = json_decode($data->Payload, true);
                     unset($Payload['Time']); //Time aus dem Array entfernen
                     unset($Payload['TempUnit']); //Time aus dem Array entfernen
-                    $this->SetBuffer('Devices', json_encode($Payload));
-                    $this->ReloadForm();
+                    $Devices = json_decode($this->GetBuffer('Devices'), true);
+                    foreach ($Payload as $key => $Value) {
+                        $Devices[$key]['MQTTTopic'] = $FloraESPTopic;
+                        $Devices[$key]['mac'] = $Value['mac'];
+                        $Devices[$key]['Temperature'] = $Value['Temperature'];
+                        $Devices[$key]['Illuminance'] = $Value['Illuminance'];
+                        $Devices[$key]['Moisture'] = $Value['Moisture'];
+                        $Devices[$key]['Fertility'] = $Value['Fertility'];
+                        $Devices[$key]['Battery'] = $Value['Battery'];
+                        $Devices[$key]['RSSI'] = $Value['RSSI'];
+                    }
+                    $this->SetBuffer('Devices', json_encode($Devices));
                 }
             }
         }

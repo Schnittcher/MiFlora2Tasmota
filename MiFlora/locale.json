@@ -2,6 +2,8 @@
     "translations": {
         "de": {
             "Devicename": "Gerätename",
+            "Filter Data with Devicename": "Filtere Daten nach Gerätename",
+            "Expert Settings": "Experten Einstellungen",
             "Temperature": "Temperatur",
             "Illuminance": "Beleuchtungsstärke",
             "Moisture": "Feuchtigkeit",

@@ -3,11 +3,15 @@
         "de": {
             "MiFlora Devices":"MiFlora Geräte",
             "Devicename": "Gerätename",
+            "Mac Address": "MAC Adresse",
+            "MQTT Topic": "MQTT Topic",
             "Temperature": "Temperatur",
             "Illuminance": "Beleuchtungsstärke",
             "Moisture": "Feuchtigkeit",
             "Fertility": "Fruchtbarkeit",
-            "RSSI": "RSSI"
+            "RSSI": "RSSI",
+            "Data Filter": "Daten Filter",
+            "Expert Settings": "Experten Einstellungen"
         }
     }
 }

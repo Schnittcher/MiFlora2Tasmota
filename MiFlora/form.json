@@ -15,7 +15,18 @@
             "type": "ValidationTextBox",
             "name": "Devicename",
             "caption": "Devicename"
-        }
+        },
+        {
+            "type":"ExpansionPanel",
+            "caption":"Expert Settings",
+            "items":[
+               {
+                  "type":"CheckBox",
+                  "name":"ExpertFilter",
+                  "caption":"Filter Data with Devicename"
+               }
+            ]
+         }
     ],
     "actions": [],
     "status": []

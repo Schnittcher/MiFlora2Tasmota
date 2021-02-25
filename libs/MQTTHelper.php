@@ -57,4 +57,14 @@ trait TasmotaMQTTHelper
 
         return $topic;
     }
+
+    protected function getTasmotaTopic($receivedData)
+    {
+        $FullTopic = explode('/', $this->ReadPropertyString('FullTopic'));
+        $TopicIndex = array_search('%topic%', $FullTopic);
+
+        $receivedTopic = explode('/', $receivedData);
+
+        return $receivedTopic[$TopicIndex];
+    }
 }

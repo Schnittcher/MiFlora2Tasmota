@@ -11,6 +11,7 @@ Feld | Beschreibung
 ------------ | -------------
 Tasmota MQTT Topic| Name des Tasmota Gerätes, ist in den MQTT Einstellungen in der Tasmota Firmware zu finden
 Full Topic | Full Topic des Tasmota Gerätes, ist in den MQTT Einstellungen der Tasmota Firmware zu finden
+Daten Filter | Filter um evtl. mehrere ESPs mit einem Konfigurator abzufangen
 
 ## 2. Funktionen
 

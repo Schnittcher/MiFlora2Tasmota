@@ -16,6 +16,7 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
             $this->RegisterPropertyString('Topic', '');
             $this->RegisterPropertyString('FullTopic', '%prefix%/%topic%');
             $this->RegisterPropertyString('Devicename', '');
+            $this->RegisterPropertyBoolean('ExpertFilter', false);
 
             $this->RegisterVariableFloat('Temperature', $this->Translate('Temperature'), '~Temperature');
             $this->RegisterVariableInteger('Illuminance', $this->Translate('Illuminance'), '~Illumination');
@@ -43,10 +44,12 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
             //Never delete this line!
             parent::ApplyChanges();
             $this->SendDebug(__FUNCTION__ . ' FullTopic', $this->ReadPropertyString('FullTopic'), 0);
-            $topic = $this->FilterFullTopicReceiveData();
-            $this->SendDebug(__FUNCTION__ . ' Filter FullTopic', $topic, 0);
+            $ReceiveDataFilter = $this->ReadPropertyString('Topic');
+            if ($this->ReadPropertyBoolean('ExpertFilter')) {
+                $ReceiveDataFilter = $this->ReadPropertyString('Devicename');
+            }
 
-            $this->SetReceiveDataFilter('.*' . $topic . '.*');
+            $this->SetReceiveDataFilter('.*' . $ReceiveDataFilter . '.*');
         }
 
         public function ReceiveData($JSONString)
