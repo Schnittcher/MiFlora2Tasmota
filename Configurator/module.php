@@ -160,8 +160,16 @@ class Configurator extends IPSModule
                         $Devices[$key]['Illuminance'] = $Value['Illuminance'];
                         $Devices[$key]['Moisture'] = $Value['Moisture'];
                         $Devices[$key]['Fertility'] = $Value['Fertility'];
-                        $Devices[$key]['Firmware'] = $Value['Firmware'];
-                        $Devices[$key]['Battery'] = $Value['Battery'];
+                        if (array_key_exists('Firmware', $Device)) {
+                            $Devices[$key]['Firmware'] = $Value['Firmware'];
+                        } else {
+                            $Devices[$key]['Firmware'] = '';
+                        }
+                        if (array_key_exists('Battery', $Device)) {
+                            $Devices[$key]['Battery'] = $Value['Battery'];
+                        } else {
+                            $Devices[$key]['Battery'] = '';
+                        }
                         $Devices[$key]['RSSI'] = $Value['RSSI'];
                     }
                     $this->SetBuffer('Devices', json_encode($Devices));
