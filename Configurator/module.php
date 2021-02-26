@@ -160,12 +160,12 @@ class Configurator extends IPSModule
                         $Devices[$key]['Illuminance'] = $Value['Illuminance'];
                         $Devices[$key]['Moisture'] = $Value['Moisture'];
                         $Devices[$key]['Fertility'] = $Value['Fertility'];
-                        if (array_key_exists('Firmware', $Device)) {
+                        if (array_key_exists('Firmware', $Value)) {
                             $Devices[$key]['Firmware'] = $Value['Firmware'];
                         } else {
                             $Devices[$key]['Firmware'] = '';
                         }
-                        if (array_key_exists('Battery', $Device)) {
+                        if (array_key_exists('Battery', $Value)) {
                             $Devices[$key]['Battery'] = $Value['Battery'];
                         } else {
                             $Devices[$key]['Battery'] = '';
