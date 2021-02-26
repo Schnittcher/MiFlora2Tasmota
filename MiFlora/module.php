@@ -66,19 +66,28 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
 
             foreach ($Payload as $key => $Device) {
                 if ($key == $this->ReadPropertyString('Devicename')) {
-                    $this->SetValue('Temperature', $Device['Temperature']);
-                    $this->SetValue('Illuminance', $Device['Illuminance']);
-                    $this->SetValue('Moisture', $Device['Moisture']);
-                    $this->SetValue('Fertility', $Device['Fertility']);
-                    $this->SetValue('Battery', $Device['Battery']);
+                    $this->SetValueIfNotNull('Temperature', $Device['Temperature']);
+                    $this->SetValueIfNotNull('Illuminance', $Device['Illuminance']);
+                    $this->SetValueIfNotNull('Moisture', $Device['Moisture']);
+                    $this->SetValueIfNotNull('Fertility', $Device['Fertility']);
+                    if (array_key_exists('Battery', $Device)) {
+                        $this->SetValueIfNotNull('Battery', $Device['Battery']);
+                    }
                     if ($this->ReadPropertyBoolean('MAC-Address')) {
-                        $this->SetValue('MAC', $Device['mac']);
+                        $this->SetValueIfNotNull('MAC', $Device['mac']);
                     }
-                    if ($this->ReadPropertyBoolean('Firmware')) {
-                        $this->SetValue('Firmware', $Device['Firmware']);
+                    if ($this->ReadPropertyBoolean('Firmware') && array_key_exists('Firmware', $Device)) {
+                        $this->SetValueIfNotNull('Firmware', $Device['Firmware']);
                     }
-                    $this->SetValue('RSSI', $Device['RSSI']);
+                    $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
                 }
+            }
+        }
+
+        private function SetValueIfNotNull($Ident, $Value)
+        {
+            if ($Value != 'null') {
+                $this->SetValue($Ident, $Value);
             }
         }
     }
