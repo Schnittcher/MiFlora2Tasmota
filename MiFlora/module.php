@@ -86,7 +86,7 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
 
         private function SetValueIfNotNull($Ident, $Value)
         {
-            if ($Value != 'null') {
+            if ($Value != null) {
                 $this->SetValue($Ident, $Value);
             }
         }
