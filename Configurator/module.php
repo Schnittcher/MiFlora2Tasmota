@@ -154,23 +154,25 @@ class Configurator extends IPSModule
                     unset($Payload['TempUnit']); //Time aus dem Array entfernen
                     $Devices = json_decode($this->GetBuffer('Devices'), true);
                     foreach ($Payload as $key => $Value) {
-                        $Devices[$key]['MQTTTopic'] = $FloraESPTopic;
-                        $Devices[$key]['mac'] = $Value['mac'];
-                        $Devices[$key]['Temperature'] = $Value['Temperature'];
-                        $Devices[$key]['Illuminance'] = $Value['Illuminance'];
-                        $Devices[$key]['Moisture'] = $Value['Moisture'];
-                        $Devices[$key]['Fertility'] = $Value['Fertility'];
-                        if (array_key_exists('Firmware', $Value)) {
-                            $Devices[$key]['Firmware'] = $Value['Firmware'];
-                        } else {
-                            $Devices[$key]['Firmware'] = '';
+                        if (fnmatch('Flora-*', $data->Topic)) {
+                            $Devices[$key]['MQTTTopic'] = $FloraESPTopic;
+                            $Devices[$key]['mac'] = $Value['mac'];
+                            $Devices[$key]['Temperature'] = $Value['Temperature'];
+                            $Devices[$key]['Illuminance'] = $Value['Illuminance'];
+                            $Devices[$key]['Moisture'] = $Value['Moisture'];
+                            $Devices[$key]['Fertility'] = $Value['Fertility'];
+                            if (array_key_exists('Firmware', $Value)) {
+                                $Devices[$key]['Firmware'] = $Value['Firmware'];
+                            } else {
+                                $Devices[$key]['Firmware'] = '';
+                            }
+                            if (array_key_exists('Battery', $Value)) {
+                                $Devices[$key]['Battery'] = $Value['Battery'];
+                            } else {
+                                $Devices[$key]['Battery'] = '';
+                            }
+                            $Devices[$key]['RSSI'] = $Value['RSSI'];
                         }
-                        if (array_key_exists('Battery', $Value)) {
-                            $Devices[$key]['Battery'] = $Value['Battery'];
-                        } else {
-                            $Devices[$key]['Battery'] = '';
-                        }
-                        $Devices[$key]['RSSI'] = $Value['RSSI'];
                     }
                     $this->SetBuffer('Devices', json_encode($Devices));
                 }
