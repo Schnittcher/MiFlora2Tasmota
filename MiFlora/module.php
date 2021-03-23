@@ -63,8 +63,8 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
             $this->SendDebug('JSON', $JSONString, 0);
             $data = json_decode($JSONString, true);
 
-            if (property_exists($data, 'Topic')) {
-                if (fnmatch('*SENSOR', $data->Topic)) {
+            if (array_key_exists('Topic', $data)) {
+                if (fnmatch('*SENSOR', $data['Topic'])) {
                     $Payload = json_decode($data['Payload'], true);
                     foreach ($Payload as $key => $Device) {
                         if ($key == $this->ReadPropertyString('Devicename')) {
