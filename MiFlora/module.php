@@ -62,24 +62,28 @@ require_once __DIR__ . '/../libs/MQTTHelper.php';
         {
             $this->SendDebug('JSON', $JSONString, 0);
             $data = json_decode($JSONString, true);
-            $Payload = json_decode($data['Payload'], true);
 
-            foreach ($Payload as $key => $Device) {
-                if ($key == $this->ReadPropertyString('Devicename')) {
-                    $this->SetValueIfNotNull('Temperature', $Device['Temperature']);
-                    $this->SetValueIfNotNull('Illuminance', $Device['Illuminance']);
-                    $this->SetValueIfNotNull('Moisture', $Device['Moisture']);
-                    $this->SetValueIfNotNull('Fertility', $Device['Fertility']);
-                    if (array_key_exists('Battery', $Device)) {
-                        $this->SetValueIfNotNull('Battery', $Device['Battery']);
+            if (property_exists($data, 'Topic')) {
+                if (fnmatch('*SENSOR', $data->Topic)) {
+                    $Payload = json_decode($data['Payload'], true);
+                    foreach ($Payload as $key => $Device) {
+                        if ($key == $this->ReadPropertyString('Devicename')) {
+                            $this->SetValueIfNotNull('Temperature', $Device['Temperature']);
+                            $this->SetValueIfNotNull('Illuminance', $Device['Illuminance']);
+                            $this->SetValueIfNotNull('Moisture', $Device['Moisture']);
+                            $this->SetValueIfNotNull('Fertility', $Device['Fertility']);
+                            if (array_key_exists('Battery', $Device)) {
+                                $this->SetValueIfNotNull('Battery', $Device['Battery']);
+                            }
+                            if ($this->ReadPropertyBoolean('MAC-Address')) {
+                                $this->SetValueIfNotNull('MAC', $Device['mac']);
+                            }
+                            if ($this->ReadPropertyBoolean('Firmware') && array_key_exists('Firmware', $Device)) {
+                                $this->SetValueIfNotNull('Firmware', $Device['Firmware']);
+                            }
+                            $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
+                        }
                     }
-                    if ($this->ReadPropertyBoolean('MAC-Address')) {
-                        $this->SetValueIfNotNull('MAC', $Device['mac']);
-                    }
-                    if ($this->ReadPropertyBoolean('Firmware') && array_key_exists('Firmware', $Device)) {
-                        $this->SetValueIfNotNull('Firmware', $Device['Firmware']);
-                    }
-                    $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
                 }
             }
         }
