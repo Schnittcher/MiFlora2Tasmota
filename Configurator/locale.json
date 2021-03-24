@@ -12,7 +12,9 @@
             "Battery": "Battery",
             "RSSI": "RSSI",
             "Data Filter": "Daten Filter",
-            "Expert Settings": "Experten Einstellungen"
+            "Expert Settings": "Experten Einstellungen",
+            "Search": "Suche",
+            "Plant": "Pflanze"
         }
     }
 }
