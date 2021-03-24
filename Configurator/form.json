@@ -18,8 +18,20 @@
               "type":"ValidationTextBox",
               "name":"Filter",
               "caption":"Data Filter"
+           },
+           { "type": "Label",
+            "caption": "Open Plantbook Settings" },
+          {
+           "type":"ValidationTextBox",
+           "name":"ClientID",
+           "caption":"ClientID"
+           },
+           {
+              "type":"ValidationTextBox",
+              "name":"ClientSecret",
+              "caption":"Client Secret"
            }
-        ]
+         ]
      }
   ],
   "actions":[
@@ -38,6 +50,11 @@
               "name":"name",
               "width":"auto"
            },
+           {
+            "caption":"Plant Name",
+            "name":"pid_plant",
+            "width":"auto"
+         },
            {
             "caption":"Mac Address",
             "name":"mac",
@@ -87,6 +104,23 @@
         "values":[
            
         ]
+     },
+     { "type": "ValidationTextBox",
+       "name": "PlantSearch",
+        "caption": "Search"
+     },
+     { "type": "Button",
+       "caption": "Search",
+       "onClick": "M2T_searchPlant($id,$PlantSearch);"
+     },
+     { "type": "Select", "name": "Plant", "caption": "Plant",
+      "options": [
+          { "caption": "-", "value": "-" }
+      ]
+     },
+     { "type": "Button",
+      "caption": "Add to Sensor",
+      "onClick": "M2T_addPlantToSensor($id,$Configurator['name'],$Plant);"
      }
   ],
   "status":[

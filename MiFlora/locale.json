@@ -9,11 +9,24 @@
             "Temperature": "Temperatur",
             "Illuminance": "Beleuchtungsstärke",
             "Moisture": "Feuchtigkeit",
-            "Fertility": "Fruchtbarkeit",
+            "Fertility": "Leitfähigkeit",
             "Battery": "Batterie",
             "MAC-Address": "MAC-Adresse",
             "Firmware": "Firmware",
-            "RSSI": "RSSI"
+            "RSSI": "RSSI",
+            "Image": "Bild",
+            "Max ENV Humid": "Luftfeuchtigkeit max.",
+            "Max Light Lux": "Helligkeit max. (Lx)",
+            "Max Light mmol": "Helligkeit max. (mmol)",
+            "Max Soil EC": "Bodenleitfähigkeit max.",
+            "Max Soil moist":"Bodenfeuchtigkeit max.",
+            "Max Temperature": "Temperatur max.",
+            "Min ENV Humid": "Luftfeuchtigkeit min.",
+            "Min Light Lux": "Helligkeit min. (Lx)",
+            "Min Light mmol": "Helligkeit min. (mmol)",
+            "Min Soil EC": "Bodenleitfähigkeit min.",
+            "Min Soil moist": "Bodenfeuchtigkeit min.",
+            "Min Temperature": "Temperatur min."
         }
     }
 }

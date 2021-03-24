@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../libs/MQTTHelper.php';
+require_once __DIR__ . '/../libs/PlantbookHTTPHelper.php';
 
 class Configurator extends IPSModule
 {
     use TasmotaMQTTHelper;
+    use PlantbookHTTPHelper;
 
     public function Create()
     {
@@ -17,6 +19,13 @@ class Configurator extends IPSModule
         $this->RegisterPropertyString('Filter', '');
         $this->RegisterPropertyString('FullTopic', '%prefix%/%topic%');
         $this->SetBuffer('Devices', '{}');
+
+        //Plantbook oAuth Token
+        $this->RegisterPropertyString('ClientID', '');
+        $this->RegisterPropertyString('ClientSecret', '');
+        $this->RegisterAttributeString('Token', '');
+        $this->RegisterAttributeInteger('TokenExpires', 0);
+        $this->RegisterAttributeString('TokenType', '');
     }
 
     public function Destroy()
@@ -49,6 +58,14 @@ class Configurator extends IPSModule
 
         foreach ($Devices as $key => $Device) {
             $instanceID = $this->getDeviceInstances($key);
+
+            $pid_plant = $this->getDeviceInstances($key);
+
+            if (array_key_exists('pid_plant', $Device)) {
+                $pid_plant = $Device['pid_plant'];
+            } else {
+                $pid_plant = '';
+            }
 
             if (array_key_exists('mac', $Device)) {
                 $mac = $Device['mac'];
@@ -110,27 +127,31 @@ class Configurator extends IPSModule
             }
 
             $AddValue = [
-                'name'                           => $key,
-                'mac'                            => $mac,
-                'MQTTTopic'                      => $MQTTTopic,
-                'Temperature'                    => $Temperature,
-                'Illuminance'                    => $Illuminance,
-                'Moisture'                       => $Moisture,
-                'Fertility'                      => $Fertility,
-                'Firmware'                       => $Firmware,
-                'Battery'                        => $Battery,
-                'RSSI'                           => $RSSI,
-                'instanceID'                     => $instanceID
+                'name'                               => $key,
+                'pid_plant'                          => $pid_plant,
+                'mac'                                => $mac,
+                'MQTTTopic'                          => $MQTTTopic,
+                'Temperature'                        => $Temperature,
+                'Illuminance'                        => $Illuminance,
+                'Moisture'                           => $Moisture,
+                'Fertility'                          => $Fertility,
+                'Firmware'                           => $Firmware,
+                'Battery'                            => $Battery,
+                'RSSI'                               => $RSSI,
+                'instanceID'                         => $instanceID
             ];
 
             $AddValue['create'] =
                 [
                     'moduleID'      => '{1ABD9482-C0FC-A2D1-BB98-C5509FB8321C}',
                     'configuration' => [
-                        'Topic'             => $this->ReadPropertyString('Topic'),
-                        'FullTopic'         => $this->ReadPropertyString('FullTopic'),
-                        'Devicename'        => $key,
-                        'ExpertFilter'      => $ValueExpertFilter
+                        'Topic'                 => $this->ReadPropertyString('Topic'),
+                        'FullTopic'             => $this->ReadPropertyString('FullTopic'),
+                        'Devicename'            => $key,
+                        'pid_plant'             => $pid_plant,
+                        'ClientID'              => $this->ReadPropertyString('ClientID'),
+                        'ClientSecret'          => $this->ReadPropertyString('ClientSecret'),
+                        'ExpertFilter'          => $ValueExpertFilter
                     ]
                 ];
 
@@ -154,30 +175,61 @@ class Configurator extends IPSModule
                     unset($Payload['TempUnit']); //Time aus dem Array entfernen
                     $Devices = json_decode($this->GetBuffer('Devices'), true);
                     foreach ($Payload as $key => $Value) {
-                        if (fnmatch('Flora-*', $data->Topic)) {
-                            $Devices[$key]['MQTTTopic'] = $FloraESPTopic;
-                            $Devices[$key]['mac'] = $Value['mac'];
-                            $Devices[$key]['Temperature'] = $Value['Temperature'];
-                            $Devices[$key]['Illuminance'] = $Value['Illuminance'];
-                            $Devices[$key]['Moisture'] = $Value['Moisture'];
-                            $Devices[$key]['Fertility'] = $Value['Fertility'];
-                            if (array_key_exists('Firmware', $Value)) {
-                                $Devices[$key]['Firmware'] = $Value['Firmware'];
-                            } else {
-                                $Devices[$key]['Firmware'] = '';
-                            }
-                            if (array_key_exists('Battery', $Value)) {
-                                $Devices[$key]['Battery'] = $Value['Battery'];
-                            } else {
-                                $Devices[$key]['Battery'] = '';
-                            }
-                            $Devices[$key]['RSSI'] = $Value['RSSI'];
+                        $Devices[$key]['MQTTTopic'] = $FloraESPTopic;
+                        $Devices[$key]['mac'] = $Value['mac'];
+                        $Devices[$key]['Temperature'] = $Value['Temperature'];
+                        $Devices[$key]['Illuminance'] = $Value['Illuminance'];
+                        $Devices[$key]['Moisture'] = $Value['Moisture'];
+                        $Devices[$key]['Fertility'] = $Value['Fertility'];
+                        if (array_key_exists('Firmware', $Value)) {
+                            $Devices[$key]['Firmware'] = $Value['Firmware'];
+                        } else {
+                            $Devices[$key]['Firmware'] = '';
                         }
+                        if (array_key_exists('Battery', $Value)) {
+                            $Devices[$key]['Battery'] = $Value['Battery'];
+                        } else {
+                            $Devices[$key]['Battery'] = '';
+                        }
+                        $Devices[$key]['RSSI'] = $Value['RSSI'];
                     }
                     $this->SetBuffer('Devices', json_encode($Devices));
                 }
             }
         }
+    }
+
+    public function searchPlant($PlantName)
+    {
+        $Plants = $this->searchRequest($PlantName);
+        IPS_LogMessage('Plants', print_r($Plants, true));
+
+        $Values = [];
+
+        $Value['caption'] = '-';
+        $Value['value'] = '-';
+        array_push($Values, $Value);
+
+        foreach ($Plants['results'] as $Plant) {
+            $Value['caption'] = $Plant['display_pid'];
+            $Value['value'] = $Plant['pid'];
+            array_push($Values, $Value);
+        }
+        $this->UpdateFormField('Plant', 'options', json_encode($Values));
+    }
+
+    public function addPlantToSensor($Sensor, $PlantName)
+    {
+        IPS_LogMessage('addPlantToSensor', $Sensor . ' ' . $PlantName);
+
+        $Devices = json_decode($this->GetBuffer('Devices'), true);
+
+        $Values = [];
+
+        $Devices[$Sensor]['pid_plant'] = $PlantName;
+        $this->SetBuffer('Devices', json_encode($Devices));
+
+        $this->ReloadForm();
     }
 
     private function getDeviceInstances($Device)
@@ -186,6 +238,17 @@ class Configurator extends IPSModule
         foreach ($InstanceIDs as $id) {
             if (IPS_GetProperty($id, 'Devicename') == $Device) {
                 return $id;
+            }
+        }
+        return 0;
+    }
+
+    private function getPlantNameFromInstance($Device)
+    {
+        $InstanceIDs = IPS_GetInstanceListByModuleID('{1ABD9482-C0FC-A2D1-BB98-C5509FB8321C}');
+        foreach ($InstanceIDs as $id) {
+            if (IPS_GetProperty($id, 'Devicename') == $Device) {
+                return IPS_GetProperty($id, 'pid_plant');
             }
         }
         return 0;

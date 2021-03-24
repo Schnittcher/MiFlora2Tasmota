@@ -15,7 +15,13 @@
           "name":"Devicename",
           "caption":"Devicename"
        },
+
        {
+         "type":"ValidationTextBox",
+         "name":"pid_plant",
+         "caption":"Plant Name"
+      },
+      {
           "type":"ExpansionPanel",
           "caption":"Expert Settings",
           "items":[
@@ -33,7 +39,19 @@
                 "type":"CheckBox",
                 "name":"ExpertFilter",
                 "caption":"Filter Data with Devicename"
-             }
+             },
+             { "type": "Label",
+               "caption": "Open Plantbook Settings" },
+             {
+              "type":"ValidationTextBox",
+              "name":"ClientID",
+              "caption":"ClientID"
+              },
+              {
+                 "type":"ValidationTextBox",
+                 "name":"ClientSecret",
+                 "caption":"Client Secret"
+              }
           ]
        }
     ],
