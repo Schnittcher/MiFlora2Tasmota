@@ -175,7 +175,7 @@ class Configurator extends IPSModule
                     unset($Payload['TempUnit']); //Time aus dem Array entfernen
                     $Devices = json_decode($this->GetBuffer('Devices'), true);
                     foreach ($Payload as $key => $Value) {
-                        if (fnmatch('Flora-*', $key)) {
+                        if (fnmatch('Flora*', $key)) {
                             $Devices[$key]['MQTTTopic'] = $FloraESPTopic;
                             $Devices[$key]['mac'] = $Value['mac'];
                             $Devices[$key]['Temperature'] = $Value['Temperature'];
