@@ -64,7 +64,7 @@ trait PlantbookHTTPHelper
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'https://open.plantbook.io/api/v1/plant/detail/' . urlencode($plantPid) . '/');
+        curl_setopt($ch, CURLOPT_URL, 'https://open.plantbook.io/api/v1/plant/detail/' . $plantPid . '/');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
