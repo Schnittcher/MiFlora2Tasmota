@@ -177,7 +177,11 @@ class Configurator extends IPSModule
                     foreach ($Payload as $key => $Value) {
                         if (fnmatch('Flora*', $key)) {
                             $Devices[$key]['MQTTTopic'] = $FloraESPTopic;
-                            $Devices[$key]['mac'] = $Value['mac'];
+                            if (array_key_exists('mac', $Value)) {
+                                $Devices[$key]['mac'] = $Value['mac'];
+                            } else {
+                                $Devices[$key]['mac'] = '';
+                            }
                             $Devices[$key]['Temperature'] = $Value['Temperature'];
                             $Devices[$key]['Illuminance'] = $Value['Illuminance'];
                             $Devices[$key]['Moisture'] = $Value['Moisture'];
