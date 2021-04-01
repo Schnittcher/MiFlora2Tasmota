@@ -177,26 +177,14 @@ class Configurator extends IPSModule
                     foreach ($Payload as $key => $Value) {
                         if (fnmatch('Flora*', $key)) {
                             $Devices[$key]['MQTTTopic'] = $FloraESPTopic;
-                            if (array_key_exists('mac', $Value)) {
-                                $Devices[$key]['mac'] = $Value['mac'];
-                            } else {
-                                $Devices[$key]['mac'] = '';
-                            }
-                            $Devices[$key]['Temperature'] = $Value['Temperature'];
-                            $Devices[$key]['Illuminance'] = $Value['Illuminance'];
-                            $Devices[$key]['Moisture'] = $Value['Moisture'];
-                            $Devices[$key]['Fertility'] = $Value['Fertility'];
-                            if (array_key_exists('Firmware', $Value)) {
-                                $Devices[$key]['Firmware'] = $Value['Firmware'];
-                            } else {
-                                $Devices[$key]['Firmware'] = '';
-                            }
-                            if (array_key_exists('Battery', $Value)) {
-                                $Devices[$key]['Battery'] = $Value['Battery'];
-                            } else {
-                                $Devices[$key]['Battery'] = '';
-                            }
-                            $Devices[$key]['RSSI'] = $Value['RSSI'];
+                            $Devices[$key]['mac'] = (array_key_exists('mac', $Value) == true ? $Value['mac'] : $this->Translate('Unknown'));
+                            $Devices[$key]['Temperature'] = (array_key_exists('Temperature', $Value) == true ? $Value['Temperature'] : $this->Translate('Unknown'));
+                            $Devices[$key]['Illuminance'] = (array_key_exists('Illuminance', $Value) == true ? $Value['Illuminance'] : $this->Translate('Unknown'));
+                            $Devices[$key]['Moisture'] = (array_key_exists('Moisture', $Value) == true ? $Value['Moisture'] : $this->Translate('Unknown'));
+                            $Devices[$key]['Fertility'] = (array_key_exists('Fertility', $Value) == true ? $Value['Fertility'] : $this->Translate('Unknown'));
+                            $Devices[$key]['Firmware'] = (array_key_exists('Firmware', $Value) == true ? $Value['Firmware'] : $this->Translate('Unknown'));
+                            $Devices[$key]['Battery'] = (array_key_exists('Battery', $Value) == true ? $Value['Battery'] : $this->Translate('Unknown'));
+                            $Devices[$key]['RSSI'] = (array_key_exists('RSSI', $Value) == true ? $Value['RSSI'] : $this->Translate('Unknown'));
                         }
                     }
                     $this->SetBuffer('Devices', json_encode($Devices));
