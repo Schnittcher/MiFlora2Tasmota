@@ -26,7 +26,21 @@
             "Min Light mmol": "Helligkeit min. (mmol)",
             "Min Soil EC": "Bodenleitfähigkeit min.",
             "Min Soil moist": "Bodenfeuchtigkeit min.",
-            "Min Temperature": "Temperatur min."
+            "Min Temperature": "Temperatur min.",
+            "Care Instructions": "Pflegehinweise",
+            "Determine Information on Humidity": "ermittle Hinweis zur Bodenfeuchtigkeit",
+            "Determine Information on Fertilization": "ermittle Hinweis zur Bodenleitfähigkeit",
+            "Determine Information on Temperature": "ermittle Hinweis zur Temperatur",
+            "Determine Information on Illumination": "ermittle Hinweis zur Helligkeit",
+            "OK": "OK",
+            "too cold": "zu kalt",
+            "too warm": "zu warm",
+            "under-fertilized": "düngen",
+            "over-fertilized": "überdüngt",
+            "too dark": "zu dunkel",
+            "too bright": "zu hell",
+            "too dry": "zu trocken",
+            "too wet": "zu nass"
         }
     }
 }

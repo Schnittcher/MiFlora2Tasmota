@@ -17,41 +17,67 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             //Never delete this line!
             parent::Create();
             $this->ConnectParent('{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}');
-            $this->RegisterPropertyString('Topic', '');
-            $this->RegisterPropertyString('FullTopic', '%prefix%/%topic%');
-            $this->RegisterPropertyString('Devicename', '');
 
-            $this->RegisterPropertyString('pid_plant', '');
-
-            $this->RegisterPropertyString('ClientID', '');
-            $this->RegisterPropertyString('ClientSecret', '');
+            // register attributes
             $this->RegisterAttributeString('Token', '');
             $this->RegisterAttributeInteger('TokenExpires', 0);
             $this->RegisterAttributeString('TokenType', '');
+
+            // register properties
+            $this->RegisterPropertyString('Topic', '');
+            $this->RegisterPropertyString('FullTopic', '%prefix%/%topic%');
+            $this->RegisterPropertyString('Devicename', '');
+            $this->RegisterPropertyString('pid_plant', '');
+
+            $this->RegisterPropertyBoolean('TemperatureHint', false);
+            $this->RegisterPropertyBoolean('FertilizeHint', false);
+            $this->RegisterPropertyBoolean('IlluminanceHint', false);
+            $this->RegisterPropertyBoolean('HumidityHint', false);
+
+            $this->RegisterPropertyString('ClientID', '');
+            $this->RegisterPropertyString('ClientSecret', '');
 
             $this->RegisterPropertyBoolean('MAC-Address', false);
             $this->RegisterPropertyBoolean('Firmware', false);
             $this->RegisterPropertyBoolean('ExpertFilter', false);
 
-            $this->RegisterProfileIntegerEx('M2T.Conductivity', 'Flower', '', ' us/cm', [], 1000, 1);
-            $this->RegisterProfileFloatEx('M2T.LightQuantity', 'Sun', '', ' µmol/m²/s', [], 0, 15000, 0.1, 2);
 
+            // register M2T profiles
+            $this->RegisterProfileIntegerEx('M2T.Conductivity', 'Flower', '', ' us/cm', [], 1000, 1);
+            $this->RegisterProfileFloatEx('M2T.LightQuantity', 'Sun', '', ' µmol/m²/s', [], 0, 15000, 0.1);
+
+            $associations = [];
+            $associations[] = [0, $this->Translate('OK'), '', 0x00FF00];
+            $associations[] = [1, $this->Translate('too cold'), '', 0xFF0000];
+            $associations[] = [2, $this->Translate('too warm'), '', 0xFF0000];
+            $this->RegisterProfileIntegerEx('M2T.TemperatureHint', '', '', '', $associations);
+
+            $associations = [];
+            $associations[] = [0, $this->Translate('OK'), '', 0x00FF00];
+            $associations[] = [1, $this->Translate('under-fertilized'), '', 0xFF0000];
+            $associations[] = [2, $this->Translate('over-fertilized'), '', 0xFF0000];
+            $this->RegisterProfileIntegerEx('M2T.FertilizeHint', '', '', '', $associations);
+
+            $associations = [];
+            $associations[] = [0, $this->Translate('OK'), '', 0x00FF00];
+            $associations[] = [1, $this->Translate('too dark'), '', 0xFF0000];
+            $associations[] = [2, $this->Translate('too bright'), '', 0xFF0000];
+            $this->RegisterProfileIntegerEx('M2T.IlluminanceHint', '', '', '', $associations);
+
+            $associations = [];
+            $associations[] = [0, $this->Translate('OK'), '', 0x00FF00];
+            $associations[] = [1, $this->Translate('too dry'), '', 0xFF0000];
+            $associations[] = [2, $this->Translate('too wet'), '', 0xFF0000];
+            $this->RegisterProfileIntegerEx('M2T.HumidityHint', '', '', '', $associations);
+
+
+            // register variables
             $this->RegisterVariableFloat('Temperature', $this->Translate('Temperature'), '~Temperature', 1);
             $this->RegisterVariableInteger('Illuminance', $this->Translate('Illuminance'), '~Illumination', 2);
             $this->RegisterVariableInteger('Moisture', $this->Translate('Moisture'), '~Intensity.100', 3);
-
-            /**
-             * if (!IPS_VariableProfileExists('M2T.Fertility')) {
-             * IPS_CreateVariableProfile('M2T.Fertility', 1);
-             * }
-             * IPS_SetVariableProfileDigits('M2T.Fertility', 0);
-             * IPS_SetVariableProfileIcon('M2T.Fertility', 'Flower');
-             * IPS_SetVariableProfileText('M2T.Fertility', '', ' us/cm');
-             */
             $this->RegisterVariableInteger('Fertility', $this->Translate('Fertility'), 'M2T.Conductivity', 4);
             $this->RegisterVariableInteger('Battery', $this->Translate('Battery'), '~Battery.100', 5);
             $this->RegisterVariableInteger('RSSI', $this->Translate('RSSI'), '', 6);
-
             $this->RegisterVariableFloat('max_light_mmol', $this->Translate('Max Light mmol'), 'M2T.LightQuantity', 7);
             $this->RegisterVariableFloat('min_light_mmol', $this->Translate('Min Light mmol'), 'M2T.LightQuantity', 8);
             $this->RegisterVariableInteger('max_light_lux', $this->Translate('Max Light Lux'), '~Illumination', 9);
@@ -76,6 +102,19 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
         {
             //Never delete this line!
             parent::ApplyChanges();
+
+            if ($this->ReadPropertyBoolean('TemperatureHint')){
+                $this->RegisterVariableInteger('TemperatureHint', $this->Translate('Temperature Hint'), 'M2T.TemperatureHint', 19);
+            }
+            if ($this->ReadPropertyBoolean('FertilizeHint')){
+                $this->RegisterVariableInteger('FertilizeHint', $this->Translate('Fertilize Hint'), 'M2T.FertilizeHint', 19);
+            }
+            if ($this->ReadPropertyBoolean('IlluminanceHint')){
+                $this->RegisterVariableInteger('IlluminanceHint', $this->Translate('Illuminance Hint'), 'M2T.IlluminanceHint', 19);
+            }
+            if ($this->ReadPropertyBoolean('HumidityHint')){
+                $this->RegisterVariableInteger('HumidityHint', $this->Translate('Humidity Hint'), 'M2T.HumidityHint', 19);
+            }
 
             $this->MaintainVariable('MAC', $this->Translate('MAC-Address'), 3, '', 0, $this->ReadPropertyBoolean('MAC-Address') == true);
             $this->MaintainVariable('Firmware', $this->Translate('Firmware'), 3, '', 0, $this->ReadPropertyBoolean('Firmware') == true);
@@ -105,13 +144,13 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
                 $PlantImageID = @IPS_GetObjectIDByIdent('PlantImage', $this->InstanceID);
                 if ($PlantImageID === false) {
-                    $PlantImageID = IPS_CreateMedia(1);
+                    $PlantImageID = IPS_CreateMedia(MEDIATYPE_IMAGE);
                     IPS_SetParent($PlantImageID, $this->InstanceID);
                     IPS_SetIdent($PlantImageID, 'PlantImage');
                     IPS_SetName($PlantImageID, $this->Translate('Image'));
                     IPS_SetPosition($PlantImageID, -5);
                     IPS_SetMediaCached($PlantImageID, true);
-                    $filename = 'media' . DIRECTORY_SEPARATOR . 'PlantImgae_' . $this->InstanceID . '.png';
+                    $filename = 'media' . DIRECTORY_SEPARATOR . 'PlantImage_' . $this->InstanceID . '.png';
                     IPS_SetMediaFile($PlantImageID, $filename, false);
                     $this->SendDebug('Create Media', $filename, 0);
                 }
@@ -120,6 +159,8 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             }
 
             $this->SetReceiveDataFilter('.*' . $ReceiveDataFilter . '.*');
+
+            $this->SetSummary($this->ReadPropertyString('Devicename'));
         }
 
         public function ReceiveData($JSONString)
@@ -127,26 +168,26 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $this->SendDebug('JSON', $JSONString, 0);
             $data = json_decode($JSONString, true);
 
-            if (array_key_exists('Topic', $data)) {
-                if (fnmatch('*SENSOR', $data['Topic'])) {
-                    $Payload = json_decode($data['Payload'], true);
-                    foreach ($Payload as $key => $Device) {
-                        if ($key == $this->ReadPropertyString('Devicename')) {
-                            $this->SetValueIfNotNull('Temperature', $Device['Temperature']);
-                            $this->SetValueIfNotNull('Illuminance', $Device['Illuminance']);
-                            $this->SetValueIfNotNull('Moisture', $Device['Moisture']);
-                            $this->SetValueIfNotNull('Fertility', $Device['Fertility']);
-                            if (array_key_exists('Battery', $Device)) {
-                                $this->SetValueIfNotNull('Battery', $Device['Battery']);
-                            }
-                            if ($this->ReadPropertyBoolean('MAC-Address')) {
-                                $this->SetValueIfNotNull('MAC', $Device['mac']);
-                            }
-                            if ($this->ReadPropertyBoolean('Firmware') && array_key_exists('Firmware', $Device)) {
-                                $this->SetValueIfNotNull('Firmware', $Device['Firmware']);
-                            }
-                            $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
+            if (array_key_exists('Topic', $data) && fnmatch('*SENSOR', $data['Topic'])) {
+                $Payload = json_decode($data['Payload'], true);
+                foreach ($Payload as $key => $Device) {
+                    if ($key === $this->ReadPropertyString('Devicename')) {
+                        $this->SetValueIfNotNull('Temperature', $Device['Temperature']);
+                        $this->SetValueIfNotNull('Illuminance', $Device['Illuminance']);
+                        $this->SetValueIfNotNull('Moisture', $Device['Moisture']);
+                        $this->SetValueIfNotNull('Fertility', $Device['Fertility']);
+                        if (array_key_exists('Battery', $Device)) {
+                            $this->SetValueIfNotNull('Battery', $Device['Battery']);
                         }
+                        if ($this->ReadPropertyBoolean('MAC-Address')) {
+                            $this->SetValueIfNotNull('MAC', $Device['mac']);
+                        }
+                        if ($this->ReadPropertyBoolean('Firmware') && array_key_exists('Firmware', $Device)) {
+                            $this->SetValueIfNotNull('Firmware', $Device['Firmware']);
+                        }
+                        $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
+
+                        $this->SetHints();
                     }
                 }
             }
@@ -157,5 +198,79 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             if ($Value != null) {
                 $this->SetValue($Ident, $Value);
             }
+        }
+
+        private function SetHints(){
+            //SoilMoisture
+            if ($this->ReadPropertyBoolean('HumidityHint')){
+                $hint = $this->getMoistureHint();
+                if ($this->GetValue('HumidityHint') !== $hint){
+                    $this->SetValue('HumidityHint', $hint);
+                }
+            }
+
+            //Fertilize
+            if ($this->ReadPropertyBoolean('FertilizeHint')) {
+                $hint = $this->getFertilizeHint();
+
+                if ($this->GetValue('FertilizeHint') !== $hint) {
+                    $this->SetValue('FertilizeHint', $hint);
+                }
+            }
+        }
+
+        private function getMoistureHint(): int{
+            $min = $this->GetValue('min_soil_moist');
+            $max = $this->GetValue('max_soil_moist');
+
+            if ($min === 0 && $max === 0) {
+                return 0;
+            }
+
+            if ($this->GetValue('Temperature') < 3) {
+                return 0;
+            }
+
+            $value = $this->GetValue('Moisture');
+
+            if ($value < $min) {
+                return 1;
+            }
+
+            if ($value > $max) {
+                return 2;
+            }
+
+            return 0;
+        }
+
+        private function getFertilizeHint(): int{
+            $min = $this->GetValue('min_soil_ec');
+            $max = $this->GetValue('max_soil_ec');
+
+            if ($min === 0 || $max === 0) {
+                return 0;
+            }
+
+            $month = (int)date('n'); // in den Wintermonaten wird nicht gedüngt
+            if (($month < 2) || ($month > 9)) {
+                return 0;
+            }
+
+            // bei Feuchtigkeitswerten unter 30% hat die Leitfähigkeit keine Aussagekraft
+            if ($this->GetValue('Moisture') < 30) {
+                return 0;
+            }
+
+            $value = $this->GetValue('Fertility');
+            if ($value < $min){
+                return 1;
+            }
+
+            if ($value > $max){
+                return 2;
+            }
+
+            return 0;
         }
     }
