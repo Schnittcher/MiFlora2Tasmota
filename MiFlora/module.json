@@ -2,7 +2,7 @@
     "id": "{1ABD9482-C0FC-A2D1-BB98-C5509FB8321C}",
     "name": "MiFlora",
     "type": 3,
-    "vendor": "",
+    "vendor": "Xiaomi",
     "aliases": ["MiFlora"],
 	"parentRequirements": ["{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}"],
 	"childRequirements": [],

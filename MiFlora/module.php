@@ -12,6 +12,21 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
         use PlantbookHTTPHelper;
         use VariableProfileHelper;
 
+        // -- property names --
+        private const PROP_TEMPERATURE_HINT                      = 'TemperatureHint';
+        private const PROP_FERTILIZE_HINT                        = 'FertilizeHint';
+        private const PROP_ILLUMINANCE_HINT                      = 'IlluminanceHint';
+        private const PROP_HUMIDITY_HINT                         = 'HumidityHint';
+        private const PROP_DLI_HINT                              = 'DLIHint';
+
+        // -- variable names --
+        private const VAR_TEMPERATURE_HINT                      = 'TemperatureHint';
+        private const VAR_FERTILIZE_HINT                        = 'FertilizeHint';
+        private const VAR_ILLUMINANCE_HINT                      = 'IlluminanceHint';
+        private const VAR_HUMIDITY_HINT                         = 'HumidityHint';
+        private const VAR_DLI_HINT                              = 'DLIHint';
+
+
         public function Create()
         {
             //Never delete this line!
@@ -24,15 +39,16 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $this->RegisterAttributeString('TokenType', '');
 
             // register properties
-            $this->RegisterPropertyString('Topic', '');
+            $this->RegisterPropertyString('Topic', 'tasmota_miflora');
             $this->RegisterPropertyString('FullTopic', '%prefix%/%topic%');
             $this->RegisterPropertyString('Devicename', '');
             $this->RegisterPropertyString('pid_plant', '');
 
-            $this->RegisterPropertyBoolean('TemperatureHint', false);
-            $this->RegisterPropertyBoolean('FertilizeHint', false);
-            $this->RegisterPropertyBoolean('IlluminanceHint', false);
-            $this->RegisterPropertyBoolean('HumidityHint', false);
+            $this->RegisterPropertyBoolean(self::PROP_TEMPERATURE_HINT, false);
+            $this->RegisterPropertyBoolean(self::PROP_FERTILIZE_HINT, false);
+            $this->RegisterPropertyBoolean(self::PROP_ILLUMINANCE_HINT, false);
+            $this->RegisterPropertyBoolean(self::PROP_HUMIDITY_HINT, false);
+            $this->RegisterPropertyBoolean(self::PROP_DLI_HINT, false);
 
             $this->RegisterPropertyString('ClientID', '');
             $this->RegisterPropertyString('ClientSecret', '');
@@ -43,8 +59,8 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
 
             // register M2T profiles
-            $this->RegisterProfileIntegerEx('M2T.Conductivity', 'Flower', '', ' us/cm', [], 1000, 1);
-            $this->RegisterProfileFloatEx('M2T.LightQuantity', 'Sun', '', ' µmol/m²/s', [], 0, 15000, 0.1);
+            $this->RegisterProfileIntegerEx('M2T.Conductivity', 'Flower', '', ' µS/cm', [], 1000, 1);
+            $this->RegisterProfileFloatEx('M2T.LightQuantity', 'Sun', '', ' µmol/m²/s', [], 15000, 0.1, 2);
 
             $associations = [];
             $associations[] = [0, $this->Translate('OK'), '', 0x00FF00];
@@ -63,6 +79,12 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $associations[] = [1, $this->Translate('too dark'), '', 0xFF0000];
             $associations[] = [2, $this->Translate('too bright'), '', 0xFF0000];
             $this->RegisterProfileIntegerEx('M2T.IlluminanceHint', '', '', '', $associations);
+
+            $associations = [];
+            $associations[] = [0, $this->Translate('OK'), '', 0x00FF00];
+            $associations[] = [1, $this->Translate('too dark'), '', 0xFF0000];
+            $associations[] = [2, $this->Translate('too bright'), '', 0xFF0000];
+            $this->RegisterProfileIntegerEx('M2T.DLIHint', '', '', '', $associations);
 
             $associations = [];
             $associations[] = [0, $this->Translate('OK'), '', 0x00FF00];
@@ -103,17 +125,20 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             //Never delete this line!
             parent::ApplyChanges();
 
-            if ($this->ReadPropertyBoolean('TemperatureHint')){
-                $this->RegisterVariableInteger('TemperatureHint', $this->Translate('Temperature Hint'), 'M2T.TemperatureHint', 19);
+            if ($this->ReadPropertyBoolean(self::PROP_TEMPERATURE_HINT)){
+                $this->RegisterVariableInteger(self::VAR_TEMPERATURE_HINT, $this->Translate('Temperature Hint'), 'M2T.TemperatureHint', 19);
             }
-            if ($this->ReadPropertyBoolean('FertilizeHint')){
-                $this->RegisterVariableInteger('FertilizeHint', $this->Translate('Fertilize Hint'), 'M2T.FertilizeHint', 19);
+            if ($this->ReadPropertyBoolean(self::PROP_FERTILIZE_HINT)){
+                $this->RegisterVariableInteger(self::VAR_FERTILIZE_HINT, $this->Translate('Soil EC Hint'), 'M2T.FertilizeHint', 19);
             }
-            if ($this->ReadPropertyBoolean('IlluminanceHint')){
-                $this->RegisterVariableInteger('IlluminanceHint', $this->Translate('Illuminance Hint'), 'M2T.IlluminanceHint', 19);
+            if ($this->ReadPropertyBoolean(self::PROP_ILLUMINANCE_HINT)){
+                $this->RegisterVariableInteger(self::VAR_ILLUMINANCE_HINT, $this->Translate('Light Lux Hint'), 'M2T.IlluminanceHint', 19);
             }
-            if ($this->ReadPropertyBoolean('HumidityHint')){
-                $this->RegisterVariableInteger('HumidityHint', $this->Translate('Humidity Hint'), 'M2T.HumidityHint', 19);
+            if ($this->ReadPropertyBoolean(self::PROP_DLI_HINT)){
+                $this->RegisterVariableInteger(self::VAR_DLI_HINT, $this->Translate('Daily Light Integral Hint'), 'M2T.DLIHint', 19);
+            }
+            if ($this->ReadPropertyBoolean(self::PROP_HUMIDITY_HINT)){
+                $this->RegisterVariableInteger(self::VAR_HUMIDITY_HINT, $this->Translate('Soil moist Hint'), 'M2T.HumidityHint', 19);
             }
 
             $this->MaintainVariable('MAC', $this->Translate('MAC-Address'), 3, '', 0, $this->ReadPropertyBoolean('MAC-Address') == true);
@@ -124,7 +149,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $ReceiveDataFilter = $this->ReadPropertyString('Devicename');
             }
 
-            if ($this->ReadPropertyString('pid_plant') != '') {
+            if ($this->ReadPropertyString('pid_plant') !== '') {
                 $PlantData = $this->getDetailRequest($this->ReadPropertyString('pid_plant'));
 
                 $this->SetValue('max_light_mmol', $PlantData['max_light_mmol']);
@@ -202,33 +227,52 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
         private function SetHints(){
             //SoilMoisture
-            if ($this->ReadPropertyBoolean('HumidityHint')){
-                $hint = $this->getMoistureHint();
-                if ($this->GetValue('HumidityHint') !== $hint){
-                    $this->SetValue('HumidityHint', $hint);
+            if ($this->ReadPropertyBoolean(self::PROP_HUMIDITY_HINT)){
+                $hint = $this->getSoilMoistureHint();
+
+                if (($hint !== -1) && ($this->GetValue(self::VAR_HUMIDITY_HINT) !== $hint)){
+                    $this->SetValue(self::VAR_HUMIDITY_HINT, $hint);
                 }
             }
 
             //Fertilize
-            if ($this->ReadPropertyBoolean('FertilizeHint')) {
+            if ($this->ReadPropertyBoolean(self::PROP_FERTILIZE_HINT)) {
                 $hint = $this->getFertilizeHint();
 
-                if ($this->GetValue('FertilizeHint') !== $hint) {
-                    $this->SetValue('FertilizeHint', $hint);
+                if (($hint !== -1) && ($this->GetValue(self::VAR_FERTILIZE_HINT) !== $hint)) {
+                    $this->SetValue(self::VAR_FERTILIZE_HINT, $hint);
+                }
+            }
+
+            //Illuminance
+            if ($this->ReadPropertyBoolean(self::PROP_ILLUMINANCE_HINT)) {
+                $hint = $this->getIlluminanceHint();
+
+                if (($hint !== -1) && ($this->GetValue(self::VAR_ILLUMINANCE_HINT) !== $hint)) {
+                    $this->SetValue(self::VAR_ILLUMINANCE_HINT, $hint);
+                }
+            }
+
+            //Temperature
+            if ($this->ReadPropertyBoolean(self::PROP_TEMPERATURE_HINT)) {
+                $hint = $this->getTemperatureHint();
+
+                if (($hint !== -1) && ($this->GetValue(self::VAR_TEMPERATURE_HINT) !== $hint)) {
+                    $this->SetValue(self::VAR_TEMPERATURE_HINT, $hint);
                 }
             }
         }
 
-        private function getMoistureHint(): int{
+        private function getSoilMoistureHint(): int{
             $min = $this->GetValue('min_soil_moist');
             $max = $this->GetValue('max_soil_moist');
 
             if ($min === 0 && $max === 0) {
-                return 0;
+                return -1;
             }
 
             if ($this->GetValue('Temperature') < 3) {
-                return 0;
+                return -1;
             }
 
             $value = $this->GetValue('Moisture');
@@ -248,8 +292,8 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $min = $this->GetValue('min_soil_ec');
             $max = $this->GetValue('max_soil_ec');
 
-            if ($min === 0 || $max === 0) {
-                return 0;
+            if ($min === 0 && $max === 0) {
+                return -1;
             }
 
             $month = (int)date('n'); // in den Wintermonaten wird nicht gedüngt
@@ -259,7 +303,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
             // bei Feuchtigkeitswerten unter 30% hat die Leitfähigkeit keine Aussagekraft
             if ($this->GetValue('Moisture') < 30) {
-                return 0;
+                return -1;
             }
 
             $value = $this->GetValue('Fertility');
@@ -273,4 +317,61 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
             return 0;
         }
+
+        private function getIlluminanceHint(): int{
+            $min = $this->GetValue('min_light_lux');
+            $max = $this->GetValue('max_light_lux');
+
+            if ($min === 0 && $max === 0) {
+                return -1;
+            }
+
+            // in den Monaten 11 - 03 wird von 10:00 Uhr bis 15:59 die Helligkeit überprüft
+            // sonst wird von 9 - 17:59 die Helligkeit überprüft
+            $month = (int)date('n');
+            $hour = (int)date('G');
+            if ($month >= 11 || $month <= 3){
+                $hour_from = 10;
+                $hour_to = 15;
+            } else {
+                $hour_from = 9;
+                $hour_to = 17;
+            }
+
+            if (($hour < $hour_from) || ($hour > $hour_to)) {
+                return -1;
+            }
+
+            $value = $this->GetValue('Illuminance');
+            if ($value < $min){
+                return 1;
+            }
+
+            if ($value > $max){
+                return 2;
+            }
+
+            return 0;
+        }
+
+        private function getTemperatureHint(): int{
+            $min = $this->GetValue('min_temp');
+            $max = $this->GetValue('max_temp');
+
+            if ($min === 0 && $max === 0) {
+                return -1;
+            }
+
+            $value = $this->GetValue('Temperature');
+            if ($value < $min){
+                return 1;
+            }
+
+            if ($value > $max){
+                return 2;
+            }
+
+            return 0;
+        }
+
     }

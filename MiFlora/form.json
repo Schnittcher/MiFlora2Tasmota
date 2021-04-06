@@ -38,13 +38,17 @@
           {
             "type":"CheckBox",
             "name":"TemperatureHint",
-            "caption":"Determine Information on Temperature",
-            "enabled":false
+            "caption":"Determine Information on Temperature"
           },
           {
             "type":"CheckBox",
             "name":"IlluminanceHint",
-            "caption":"Determine Information on Illumination",
+            "caption":"Determine Information on Illumination"
+          },
+          {
+            "type":"CheckBox",
+            "name":"DLIHint",
+            "caption":"Determine Information on Daily Light Integral",
             "enabled":false
           }
         ]
