@@ -15,18 +15,17 @@ Filtere Daten nach Gerätename | Die eingehenden Daten werden nach dem Gerätena
 
 ###Pflegehinweise
 Es können für die Temperatur, die Bodenleitfähigkeit, die Bodenfeuchtigkeit, die Helligkeit und die tägliche Lichtmenge Hinweise ermittelt werden.
-Dazu werden die hinterlegten min und max Werte der jeweiligen Messgröße ausgewertet. 
+Dazu werden die hinterlegten min und max Werte der jeweiligen Messgröße ausgewertet und ein Hinweis auf Unter- bzw. Überschreitung gesetzt. 
 
 Im Einzelnen erfolgt die Auswertung wie folgt:
 
 - Bodenfeuchtigkeit 
 
 Es wird geprüft, ob die aktuelle Bodenfeuchtigkeit kleiner bzw. höher ist als die vorgegebenen Grenzwerte.
-Da bei trockenem Pflanzsubstrat die Bodenleitfähigkeit stark abnimmt, wird ein Pflegehinweis nur erstellt, wenn die Bodenfeuchtigkeit höher ist als 30%.
 
 - Temperatur
 
-Es wird geprüft, ob die aktuelle Temperatur kleiner bzw. höher ist als die vorgegebenen Grenzwerte.
+Es wird geprüft, ob die Durchschnittstemperatur der letzten 24 Stunden kleiner bzw. höher ist als die vorgegebenen Grenzwerte.
   
 - Bodenleitfähigkeit (Hinweis zum Düngen)
 
@@ -39,14 +38,11 @@ Da in den Monaten Oktober bis Januar üblicherweise nicht gedüngt wird, unterbl
 Es wird geprüft, ob die aktuelle Helligkeit kleiner bzw. höher ist als die vorgegebenen Grenzwerte.
 Dabei erfolgt ein Hinweis nur tagsüber. Konkret: in den Monaten November bis März von 10 - 16 Uhr, sonst von 9 - 18 Uhr.
 
-- 
-
+- tägliche Lichtmenge
+Die tägliche Lichtmenge wird aus den aufgezeichneten Helligkeitswerten (lx) errechnet. 
+Ein Hinweis erfolgt, wenn die tägliche Lichtmenge in den letzten drei Tage außerhalb des vorgegebenen Bereichs lag. 
   
 
-
-
-Feld | Beschreibung
------------- | -------------
 
 
 ## 2. Funktionen

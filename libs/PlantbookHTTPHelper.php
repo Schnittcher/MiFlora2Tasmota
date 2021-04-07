@@ -56,7 +56,7 @@ trait PlantbookHTTPHelper
         return $result;
     }
 
-    protected function getDetailRequest($plantPid)
+    protected function getDetailRequest(string $plantPid): array
     {
         if ($this->ReadAttributeInteger('TokenExpires') <= time()) {
             $this->getToken();
@@ -77,7 +77,9 @@ trait PlantbookHTTPHelper
             echo 'Error:' . curl_error($ch);
         }
         curl_close($ch);
-        $result = json_decode($resultAPI, true);
-        return $result;
+        if (!$resultAPI) {
+            return [];
+        }
+        return json_decode($resultAPI, true);
     }
 }
