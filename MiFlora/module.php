@@ -373,7 +373,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $min = $this->GetValue('min_temp');
             $max = $this->GetValue('max_temp');
 
-            if ($min === 0 && $max === 0) {
+            if ($min === 0.0 && $max === 0.0) {
                 return -1;
             }
 
@@ -412,7 +412,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $min = $this->GetValue('max_light_mmol');
             $max = $this->GetValue('max_light_mmol');
 
-            if ($min === 0 && $max === 0) {
+            if ($min === 0.0 && $max === 0.0) {
                 return -1;
             }
 
