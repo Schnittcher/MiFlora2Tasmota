@@ -62,7 +62,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
             // register M2T profiles
             $this->RegisterProfileIntegerEx('M2T.Conductivity', 'Flower', '', ' µS/cm', [], 1000, 1);
-            $this->RegisterProfileFloatEx('M2T.LightQuantity', 'Sun', '', ' µmol/m²/s', [], 15000, 0.1, 2);
+            $this->RegisterProfileFloatEx('M2T.LightQuantity', 'Sun', '', ' µmol/m²s', [], 15000, 0.1, 2);
 
             $associations = [];
             $associations[] = [0, $this->Translate('OK'), '', 0x00FF00];

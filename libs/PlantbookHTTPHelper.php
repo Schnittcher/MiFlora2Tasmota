@@ -75,9 +75,11 @@ trait PlantbookHTTPHelper
         $resultAPI = curl_exec($ch);
         if (curl_errno($ch)) {
             echo 'Error:' . curl_error($ch);
+            return [];
         }
         curl_close($ch);
-        if (!$resultAPI) {
+
+        if (!$resultAPI){
             return [];
         }
         return json_decode($resultAPI, true);
