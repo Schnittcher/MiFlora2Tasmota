@@ -379,7 +379,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
             // calc avg of last 24 hours
             $EndTime = time();
-            $StartTime = strtotime('- 24 hours', $EndTime);
+            $StartTime = strtotime('- 6 hours', $EndTime);
 
             $loggedValues = @AC_GetAggregatedValues(IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0],
                                    $this->GetIDForIdent(self::VAR_TEMPERATURE),

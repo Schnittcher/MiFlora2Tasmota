@@ -13,7 +13,7 @@ Tasmota MQTT Topic| Name des Tasmota Gerätes, ist in den MQTT Einstellungen in 
 Full Topic | Full Topic des Tasmota Gerätes, ist in den MQTT Einstellungen der Tasmota Firmware zu finden
 Filtere Daten nach Gerätename | Die eingehenden Daten werden nach dem Gerätenamen gefiltet
 
-###Pflegehinweise
+### Pflegehinweise
 Es können für die Temperatur, die Bodenleitfähigkeit, die Bodenfeuchtigkeit, die Helligkeit und die tägliche Lichtmenge Hinweise ermittelt werden.
 Dazu werden die hinterlegten min und max Werte der jeweiligen Messgröße ausgewertet und ein Hinweis auf Unter- bzw. Überschreitung gesetzt. 
 
@@ -25,7 +25,7 @@ Es wird geprüft, ob die aktuelle Bodenfeuchtigkeit kleiner bzw. höher ist als 
 
 - Temperatur
 
-Es wird geprüft, ob die Durchschnittstemperatur der letzten 24 Stunden kleiner bzw. höher ist als die vorgegebenen Grenzwerte.
+Es wird geprüft, ob die Durchschnittstemperatur der letzten 6 Stunden kleiner bzw. höher ist als die vorgegebenen Grenzwerte.
   
 - Bodenleitfähigkeit (Hinweis zum Düngen)
 
