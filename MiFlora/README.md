@@ -39,6 +39,7 @@ Es wird geprüft, ob die aktuelle Helligkeit kleiner bzw. höher ist als die vor
 Dabei erfolgt ein Hinweis nur tagsüber. Konkret: in den Monaten November bis März von 10 - 16 Uhr, sonst von 9 - 18 Uhr.
 
 - tägliche Lichtmenge
+
 Die tägliche Lichtmenge wird aus den aufgezeichneten Helligkeitswerten (lx) errechnet. 
 Ein Hinweis erfolgt, wenn die tägliche Lichtmenge in den letzten drei Tage außerhalb des vorgegebenen Bereichs lag. 
   
