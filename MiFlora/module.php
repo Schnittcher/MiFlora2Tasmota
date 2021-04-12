@@ -13,21 +13,20 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
         use VariableProfileHelper;
 
         // -- property names --
-        private const PROP_TEMPERATURE_HINT                     = 'TemperatureHint';
-        private const PROP_FERTILIZE_HINT                       = 'FertilizeHint';
-        private const PROP_ILLUMINANCE_HINT                     = 'IlluminanceHint';
-        private const PROP_HUMIDITY_HINT                        = 'HumidityHint';
-        private const PROP_DLI_HINT                             = 'DLIHint';
+        private const PROP_TEMPERATURE_HINT = 'TemperatureHint';
+        private const PROP_FERTILIZE_HINT = 'FertilizeHint';
+        private const PROP_ILLUMINANCE_HINT = 'IlluminanceHint';
+        private const PROP_HUMIDITY_HINT = 'HumidityHint';
+        private const PROP_DLI_HINT = 'DLIHint';
 
         // -- variable names --
-        private const VAR_TEMPERATURE                           = 'Temperature';
-        private const VAR_ILLUMINANCE                           = 'Illuminance';
-        private const VAR_TEMPERATURE_HINT                      = 'TemperatureHint';
-        private const VAR_FERTILIZE_HINT                        = 'FertilizeHint';
-        private const VAR_ILLUMINANCE_HINT                      = 'IlluminanceHint';
-        private const VAR_HUMIDITY_HINT                         = 'HumidityHint';
-        private const VAR_DLI_HINT                              = 'DLIHint';
-
+        private const VAR_TEMPERATURE = 'Temperature';
+        private const VAR_ILLUMINANCE = 'Illuminance';
+        private const VAR_TEMPERATURE_HINT = 'TemperatureHint';
+        private const VAR_FERTILIZE_HINT = 'FertilizeHint';
+        private const VAR_ILLUMINANCE_HINT = 'IlluminanceHint';
+        private const VAR_HUMIDITY_HINT = 'HumidityHint';
+        private const VAR_DLI_HINT = 'DLIHint';
 
         public function Create()
         {
@@ -58,7 +57,6 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $this->RegisterPropertyBoolean('MAC-Address', false);
             $this->RegisterPropertyBoolean('Firmware', false);
             $this->RegisterPropertyBoolean('ExpertFilter', false);
-
 
             // register M2T profiles
             $this->RegisterProfileIntegerEx('M2T.Conductivity', 'Flower', '', ' µS/cm', [], 1000, 1);
@@ -94,7 +92,6 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $associations[] = [2, $this->Translate('too wet'), '', 0xFF0000];
             $this->RegisterProfileIntegerEx('M2T.HumidityHint', '', '', '', $associations);
 
-
             // register variables
             $this->RegisterVariableFloat(self::VAR_TEMPERATURE, $this->Translate('Temperature'), '~Temperature', 1);
             $this->RegisterVariableInteger(self::VAR_ILLUMINANCE, $this->Translate('Illuminance'), '~Illumination', 2);
@@ -127,21 +124,21 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             //Never delete this line!
             parent::ApplyChanges();
 
-            if ($this->ReadPropertyBoolean(self::PROP_TEMPERATURE_HINT)){
+            if ($this->ReadPropertyBoolean(self::PROP_TEMPERATURE_HINT)) {
                 $this->RegisterVariableInteger(self::VAR_TEMPERATURE_HINT, $this->Translate('Temperature Hint'), 'M2T.TemperatureHint', 19);
                 AC_SetLoggingStatus(IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0], $this->GetIDForIdent(self::VAR_TEMPERATURE), true);
             }
-            if ($this->ReadPropertyBoolean(self::PROP_FERTILIZE_HINT)){
+            if ($this->ReadPropertyBoolean(self::PROP_FERTILIZE_HINT)) {
                 $this->RegisterVariableInteger(self::VAR_FERTILIZE_HINT, $this->Translate('Soil EC Hint'), 'M2T.FertilizeHint', 19);
             }
-            if ($this->ReadPropertyBoolean(self::PROP_ILLUMINANCE_HINT)){
+            if ($this->ReadPropertyBoolean(self::PROP_ILLUMINANCE_HINT)) {
                 $this->RegisterVariableInteger(self::VAR_ILLUMINANCE_HINT, $this->Translate('Light Lux Hint'), 'M2T.IlluminanceHint', 19);
             }
-            if ($this->ReadPropertyBoolean(self::PROP_DLI_HINT)){
+            if ($this->ReadPropertyBoolean(self::PROP_DLI_HINT)) {
                 $this->RegisterVariableInteger(self::VAR_DLI_HINT, $this->Translate('Daily Light Integral Hint'), 'M2T.DLIHint', 19);
                 AC_SetLoggingStatus(IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0], $this->GetIDForIdent(self::VAR_ILLUMINANCE), true);
             }
-            if ($this->ReadPropertyBoolean(self::PROP_HUMIDITY_HINT)){
+            if ($this->ReadPropertyBoolean(self::PROP_HUMIDITY_HINT)) {
                 $this->RegisterVariableInteger(self::VAR_HUMIDITY_HINT, $this->Translate('Soil moist Hint'), 'M2T.HumidityHint', 19);
             }
 
@@ -155,7 +152,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
             if ($this->ReadPropertyString('pid_plant') !== '') {
                 $PlantData = $this->getDetailRequest($this->ReadPropertyString('pid_plant'));
-                if ($PlantData !== []){
+                if ($PlantData !== []) {
                     $this->SetValue('max_light_mmol', $PlantData['max_light_mmol']);
                     $this->SetValue('min_light_mmol', $PlantData['min_light_mmol']);
                     $this->SetValue('max_light_lux', $PlantData['max_light_lux']);
@@ -230,9 +227,10 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             }
         }
 
-        private function SetHints(){
+        private function SetHints()
+        {
             //SoilMoisture
-            if ($this->ReadPropertyBoolean(self::PROP_HUMIDITY_HINT)){
+            if ($this->ReadPropertyBoolean(self::PROP_HUMIDITY_HINT)) {
                 $hint = $this->getSoilMoistureHint();
 
                 if ($hint !== -1) {
@@ -275,10 +273,10 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                     $this->SetValue(self::VAR_DLI_HINT, $hint);
                 }
             }
-
         }
 
-        private function getSoilMoistureHint(): int{
+        private function getSoilMoistureHint(): int
+        {
             $min = $this->GetValue('min_soil_moist');
             $max = $this->GetValue('max_soil_moist');
 
@@ -303,7 +301,8 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             return 0;
         }
 
-        private function getFertilizeHint(): int{
+        private function getFertilizeHint(): int
+        {
             $min = $this->GetValue('min_soil_ec');
             $max = $this->GetValue('max_soil_ec');
 
@@ -311,7 +310,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 return -1;
             }
 
-            $month = (int)date('n'); // in den Wintermonaten wird nicht gedüngt
+            $month = (int) date('n'); // in den Wintermonaten wird nicht gedüngt
             if (($month < 2) || ($month > 9)) {
                 return 0;
             }
@@ -322,18 +321,19 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             }
 
             $value = $this->GetValue('Fertility');
-            if ($value < $min){
+            if ($value < $min) {
                 return 1;
             }
 
-            if ($value > $max){
+            if ($value > $max) {
                 return 2;
             }
 
             return 0;
         }
 
-        private function getIlluminanceHint(): int{
+        private function getIlluminanceHint(): int
+        {
             $min = $this->GetValue('min_light_lux');
             $max = $this->GetValue('max_light_lux');
 
@@ -343,9 +343,9 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
             // in den Monaten 11 - 03 wird von 10:00 Uhr bis 15:59 die Helligkeit überprüft
             // sonst wird von 9 - 17:59 die Helligkeit überprüft
-            $month = (int)date('n');
-            $hour = (int)date('G');
-            if ($month >= 11 || $month <= 3){
+            $month = (int) date('n');
+            $hour = (int) date('G');
+            if ($month >= 11 || $month <= 3) {
                 $hour_from = 10;
                 $hour_to = 15;
             } else {
@@ -358,18 +358,19 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             }
 
             $value = $this->GetValue(self::VAR_ILLUMINANCE);
-            if ($value < $min){
+            if ($value < $min) {
                 return 1;
             }
 
-            if ($value > $max){
+            if ($value > $max) {
                 return 2;
             }
 
             return 0;
         }
 
-        private function getTemperatureHint(): int{
+        private function getTemperatureHint(): int
+        {
             $min = $this->GetValue('min_temp');
             $max = $this->GetValue('max_temp');
 
@@ -387,28 +388,29 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                                     $StartTime,
                                     $EndTime,
                                     0);
-            if (!$loggedValues || $loggedValues === []){
+            if (!$loggedValues || $loggedValues === []) {
                 $this->SendDebug(__FUNCTION__, sprintf('No aggregated values available for id %s', $this->GetIDForIdent(self::VAR_TEMPERATURE)), 0);
                 return -1;
             }
 
             $Avg_sum = 0;
-            foreach ($loggedValues as $item){
+            foreach ($loggedValues as $item) {
                 $Avg_sum += $item['Avg'];
             }
-            $value =  $Avg_sum/count($loggedValues);
+            $value = $Avg_sum / count($loggedValues);
 
-            if ($value < $min){
+            if ($value < $min) {
                 return 1;
             }
 
-            if ($value > $max){
+            if ($value > $max) {
                 return 2;
             }
 
             return 0;
         }
-        private function getDLIHint(): int{
+        private function getDLIHint(): int
+        {
             $min = $this->GetValue('max_light_mmol');
             $max = $this->GetValue('max_light_mmol');
 
@@ -422,43 +424,40 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $ArchiveHandlerID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
             $IlluminanceId = $this->GetIDForIdent(self::VAR_ILLUMINANCE);
 
-
             $DLIHints = [];
 
-            for ($i = 1; $i <= 3;$i++){
+            for ($i = 1; $i <= 3; $i++) {
                 $arr = @AC_GetLoggedValues($ArchiveHandlerID, $IlluminanceId, $StartTime, $EndTime, 0);
-                if (!$arr || $arr === []){
+                if (!$arr || $arr === []) {
                     $this->SendDebug(__FUNCTION__, sprintf('No logged values available for id %s', $this->GetIDForIdent(self::VAR_ILLUMINANCE)), 0);
                     return -1;
                 }
                 $sum_mol = 0;
 
-                foreach (array_reverse($arr) as $item){
+                foreach (array_reverse($arr) as $item) {
                     $sum_mol += $item['Value'] * 0.0185 * $item['Duration'] / 1000000;
                 }
 
-                if ($sum_mol < $min){
-                    $DLIHints[] =  1;
-                } elseif ($sum_mol > $max){
-                    $DLIHints[] =  2;
+                if ($sum_mol < $min) {
+                    $DLIHints[] = 1;
+                } elseif ($sum_mol > $max) {
+                    $DLIHints[] = 2;
                 } else {
                     $DLIHints[] = 0;
                 }
 
                 $EndTime = strtotime('-1 day', $EndTime);
                 $StartTime = strtotime('-1 day', $StartTime);
-
             }
 
             // ist die Lichtmenge an allen Tagen unter- bzw. überschritten?
-            if (array_unique($DLIHints) === [1]){
+            if (array_unique($DLIHints) === [1]) {
                 return 1;
             }
-            if (array_unique($DLIHints) === [2]){
+            if (array_unique($DLIHints) === [2]) {
                 return 2;
             }
 
             return 0;
         }
-
     }

@@ -79,7 +79,7 @@ trait PlantbookHTTPHelper
         }
         curl_close($ch);
 
-        if (!$resultAPI){
+        if (!$resultAPI) {
             return [];
         }
         return json_decode($resultAPI, true);
