@@ -22,43 +22,76 @@
          "caption":"Plant Name"
       },
       {
-          "type":"ExpansionPanel",
-          "caption":"Expert Settings",
-          "items":[
-             {
-                "type":"CheckBox",
-                "name":"MAC-Address",
-                "caption":"Show MAC-Address Variable"
-             },
-             {
-                "type":"CheckBox",
-                "name":"Firmware",
-                "caption":"Show Firmware Variable"
-             },
-             {
-                "type":"CheckBox",
-                "name":"ExpertFilter",
-                "caption":"Filter Data with Devicename"
-             },
-             { "type": "Label",
-               "caption": "Open Plantbook Settings" },
-             {
-              "type":"ValidationTextBox",
-              "name":"ClientID",
-              "caption":"ClientID"
-              },
-              {
-                 "type":"ValidationTextBox",
-                 "name":"ClientSecret",
-                 "caption":"Client Secret"
-              }
-          ]
-       }
+        "type":"ExpansionPanel",
+        "caption":"Care Instructions",
+        "items":[
+          {
+            "type":"CheckBox",
+            "name":"HumidityHint",
+            "caption":"Determine Information on Humidity"
+          },
+          {
+            "type":"CheckBox",
+            "name":"FertilizeHint",
+            "caption":"Determine Information on Fertilization"
+          },
+          {
+            "type":"CheckBox",
+            "name":"TemperatureHint",
+            "caption":"Determine Information on Temperature"
+          },
+          {
+            "type":"CheckBox",
+            "name":"IlluminanceHint",
+            "caption":"Determine Information on Illumination"
+          },
+          {
+            "type":"CheckBox",
+            "name":"DLIHint",
+            "caption":"Determine Information on Daily Light Integral"
+          },
+          {
+            "type": "Label",
+            "caption": "(*) Note: The determination of the temperature information requires a recording of the temperature values, the determination of the information on the amount of light requires the recording of the illuminance. The corresponding archiving is automatically activated for the variables."
+          }
+        ]
+      },
+      {
+        "type":"ExpansionPanel",
+        "caption":"Expert Settings",
+        "items":[
+          {
+            "type":"CheckBox",
+            "name":"MAC-Address",
+            "caption":"Show MAC-Address Variable"
+          },
+          {
+            "type":"CheckBox",
+            "name":"Firmware",
+            "caption":"Show Firmware Variable"
+          },
+          {
+            "type":"CheckBox",
+            "name":"ExpertFilter",
+            "caption":"Filter Data with Devicename"
+          },
+          { "type": "Label",
+            "caption": "Open Plantbook Settings" },
+          {
+            "type":"ValidationTextBox",
+            "name":"ClientID",
+            "caption":"ClientID"
+          },
+          {
+            "type":"ValidationTextBox",
+            "name":"ClientSecret",
+            "caption":"Client Secret"
+          }
+        ]
+      }
     ],
     "actions":[
-       
     ],
     "status":[
-       
     ]
  }

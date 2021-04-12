@@ -107,7 +107,7 @@
      },
      { "type": "ValidationTextBox",
        "name": "PlantSearch",
-        "caption": "Search"
+        "caption": "Search in Open Plantbook"
      },
      { "type": "Button",
        "caption": "Search",

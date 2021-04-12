@@ -3,19 +3,22 @@
         "de": {
             "MiFlora Devices":"MiFlora Geräte",
             "Devicename": "Gerätename",
+            "Plant Name": "Pflanzenname",
             "Mac Address": "MAC Adresse",
             "MQTT Topic": "MQTT Topic",
             "Temperature": "Temperatur",
             "Illuminance": "Beleuchtungsstärke",
             "Moisture": "Feuchtigkeit",
             "Fertility": "Fruchtbarkeit",
-            "Battery": "Battery",
+            "Battery": "Batterie",
             "RSSI": "RSSI",
             "Data Filter": "Daten Filter",
             "Expert Settings": "Experten Einstellungen",
+            "Search in Open Plantbook": "Suche in Open Plantbook",
             "Search": "Suche",
             "Plant": "Pflanze",
-            "Unknown": "Unbekannt"
+            "Unknown": "Unbekannt",
+            "Add to Sensor": "dem ausgewählten Gerät zuordnen"
         }
     }
 }

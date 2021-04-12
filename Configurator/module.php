@@ -59,8 +59,6 @@ class Configurator extends IPSModule
         foreach ($Devices as $key => $Device) {
             $instanceID = $this->getDeviceInstances($key);
 
-            $pid_plant = $this->getDeviceInstances($key);
-
             if (array_key_exists('pid_plant', $Device)) {
                 $pid_plant = $Device['pid_plant'];
             } else {
@@ -80,7 +78,7 @@ class Configurator extends IPSModule
             }
 
             if (array_key_exists('Temperature', $Device)) {
-                $Temperature = $Device['Temperature'] . ' ℃';
+                $Temperature = $Device['Temperature'] . ' °C';
             } else {
                 $Temperature = '';
             }
@@ -152,7 +150,8 @@ class Configurator extends IPSModule
                         'ClientID'              => $this->ReadPropertyString('ClientID'),
                         'ClientSecret'          => $this->ReadPropertyString('ClientSecret'),
                         'ExpertFilter'          => $ValueExpertFilter
-                    ]
+                    ],
+                    'name'          => $pid_plant === ''?$key:$pid_plant
                 ];
 
             $Values[] = $AddValue;
@@ -202,12 +201,12 @@ class Configurator extends IPSModule
 
         $Value['caption'] = '-';
         $Value['value'] = '-';
-        array_push($Values, $Value);
+        $Values[] = $Value;
 
         foreach ($Plants['results'] as $Plant) {
             $Value['caption'] = $Plant['display_pid'];
             $Value['value'] = $Plant['pid'];
-            array_push($Values, $Value);
+            $Values[] = $Value;
         }
         $this->UpdateFormField('Plant', 'options', json_encode($Values));
     }
@@ -218,9 +217,12 @@ class Configurator extends IPSModule
 
         $Devices = json_decode($this->GetBuffer('Devices'), true);
 
-        $Values = [];
+        if ($PlantName === '-'){
+            $Devices[$Sensor]['pid_plant'] = '';
+        } else {
+            $Devices[$Sensor]['pid_plant'] = $PlantName;
+        }
 
-        $Devices[$Sensor]['pid_plant'] = $PlantName;
         $this->SetBuffer('Devices', json_encode($Devices));
 
         $this->ReloadForm();
