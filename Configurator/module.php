@@ -151,7 +151,7 @@ class Configurator extends IPSModule
                         'ClientSecret'          => $this->ReadPropertyString('ClientSecret'),
                         'ExpertFilter'          => $ValueExpertFilter
                     ],
-                    'name'          => $pid_plant === ''?$key:$pid_plant
+                    'name'          => $pid_plant === '' ? $key : $pid_plant
                 ];
 
             $Values[] = $AddValue;
@@ -217,7 +217,7 @@ class Configurator extends IPSModule
 
         $Devices = json_decode($this->GetBuffer('Devices'), true);
 
-        if ($PlantName === '-'){
+        if ($PlantName === '-') {
             $Devices[$Sensor]['pid_plant'] = '';
         } else {
             $Devices[$Sensor]['pid_plant'] = $PlantName;
