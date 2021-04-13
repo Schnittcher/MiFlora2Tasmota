@@ -5,6 +5,7 @@
             "Plant Name": "Pflanzenname",
             "Expert Settings": "Experten Einstellungen",
             "Filter Data with Devicename": "Filtere Daten nach Gerätename",
+            "Show Plant Name Variable": "Zeige Pflanzennamen Variable",
             "Show MAC-Address Variable": "Zeige MAC-Address Variable",
             "Show Firmware Variable": "Zeige Firmware Variable",
             "Temperature": "Temperatur",

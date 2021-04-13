@@ -54,6 +54,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $this->RegisterPropertyString('ClientID', '');
             $this->RegisterPropertyString('ClientSecret', '');
 
+            $this->RegisterPropertyBoolean('PlantName', false);
             $this->RegisterPropertyBoolean('MAC-Address', false);
             $this->RegisterPropertyBoolean('Firmware', false);
             $this->RegisterPropertyBoolean('ExpertFilter', false);
@@ -93,7 +94,6 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $this->RegisterProfileIntegerEx('M2T.HumidityHint', '', '', '', $associations);
 
             // register variables
-            $this->RegisterVariableString('PlantName', $this->Translate('Plant Name'), '', 0);
             $this->RegisterVariableFloat(self::VAR_TEMPERATURE, $this->Translate('Temperature'), '~Temperature', 1);
             $this->RegisterVariableInteger(self::VAR_ILLUMINANCE, $this->Translate('Illuminance'), '~Illumination', 2);
             $this->RegisterVariableInteger('Moisture', $this->Translate('Moisture'), '~Intensity.100', 3);
@@ -125,7 +125,6 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
         {
             //Never delete this line!
             parent::ApplyChanges();
-            $this->SetValue('PlantName', $this->ReadPropertyString('pid_plant'));
 
             if ($this->ReadPropertyBoolean(self::PROP_TEMPERATURE_HINT)) {
                 $this->RegisterVariableInteger(self::VAR_TEMPERATURE_HINT, $this->Translate('Temperature Hint'), 'M2T.TemperatureHint', 19);
@@ -145,8 +144,13 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $this->RegisterVariableInteger(self::VAR_HUMIDITY_HINT, $this->Translate('Soil moist Hint'), 'M2T.HumidityHint', 19);
             }
 
+            $this->MaintainVariable('PlantName', $this->Translate('Plant Name'), 3, '', 0, $this->ReadPropertyBoolean('PlantName') == true);
             $this->MaintainVariable('MAC', $this->Translate('MAC-Address'), 3, '', 0, $this->ReadPropertyBoolean('MAC-Address') == true);
             $this->MaintainVariable('Firmware', $this->Translate('Firmware'), 3, '', 0, $this->ReadPropertyBoolean('Firmware') == true);
+
+            if ($this->ReadPropertyBoolean('PlantName') == true) {
+                $this->SetValue('PlantName', $this->ReadPropertyString('pid_plant'));
+            }
 
             $ReceiveDataFilter = $this->ReadPropertyString('Topic');
             if ($this->ReadPropertyBoolean('ExpertFilter')) {
@@ -217,8 +221,8 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                         }
                         $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
 
-                        if (array_key_exists('Time', $Device)) {
-                            $date = new DateTime($Device['Time']);
+                        if (array_key_exists('Time', $Payload)) {
+                            $date = new DateTime($Payload['Time']);
                             $this->SetValueIfNotNull('Time', $date->getTimestamp());
                         }
 
