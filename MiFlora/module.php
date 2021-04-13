@@ -93,6 +93,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $this->RegisterProfileIntegerEx('M2T.HumidityHint', '', '', '', $associations);
 
             // register variables
+            $this->RegisterVariableString('PlantName', $this->Translate('Plant Name'), '', 0);
             $this->RegisterVariableFloat(self::VAR_TEMPERATURE, $this->Translate('Temperature'), '~Temperature', 1);
             $this->RegisterVariableInteger(self::VAR_ILLUMINANCE, $this->Translate('Illuminance'), '~Illumination', 2);
             $this->RegisterVariableInteger('Moisture', $this->Translate('Moisture'), '~Intensity.100', 3);
@@ -111,6 +112,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $this->RegisterVariableInteger('min_soil_moist', $this->Translate('Min Soil moist'), '~Intensity.100', 16);
             $this->RegisterVariableInteger('max_soil_ec', $this->Translate('Max Soil EC'), 'M2T.Conductivity', 17);
             $this->RegisterVariableInteger('min_soil_ec', $this->Translate('Min Soil EC'), 'M2T.Conductivity', 18);
+            $this->RegisterVariableInteger('Time', $this->Translate('Last Sensor Update'), '~UnixTimestamp', 19);
         }
 
         public function Destroy()
@@ -123,6 +125,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
         {
             //Never delete this line!
             parent::ApplyChanges();
+            $this->SetValue('PlantName', $this->ReadPropertyString('pid_plant'));
 
             if ($this->ReadPropertyBoolean(self::PROP_TEMPERATURE_HINT)) {
                 $this->RegisterVariableInteger(self::VAR_TEMPERATURE_HINT, $this->Translate('Temperature Hint'), 'M2T.TemperatureHint', 19);
@@ -213,6 +216,11 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                             $this->SetValueIfNotNull('Firmware', $Device['Firmware']);
                         }
                         $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
+
+                        if (array_key_exists('Time', $Device)) {
+                            $date = new DateTime($Device['Time']);
+                            $this->SetValueIfNotNull('Time', $date->getTimestamp());
+                        }
 
                         $this->SetHints();
                     }

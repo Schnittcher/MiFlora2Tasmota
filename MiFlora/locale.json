@@ -2,6 +2,7 @@
     "translations": {
         "de": {
             "Devicename": "Gerätename",
+            "Plant Name": "Pflanzenname",
             "Expert Settings": "Experten Einstellungen",
             "Filter Data with Devicename": "Filtere Daten nach Gerätename",
             "Show MAC-Address Variable": "Zeige MAC-Address Variable",
@@ -47,7 +48,8 @@
             "too dark": "zu dunkel",
             "too bright": "zu hell",
             "too dry": "zu trocken",
-            "too wet": "zu nass"
+            "too wet": "zu nass",
+            "Last Sensor Update": "Letzte Sensor Aktualisierung"
         }
     }
 }
