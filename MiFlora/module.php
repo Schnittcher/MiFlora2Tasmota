@@ -437,6 +437,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             $IlluminanceId = $this->GetIDForIdent(self::VAR_ILLUMINANCE);
 
             $DLIHints = [];
+            $DLISums = [];
 
             for ($i = 1; $i <= 3; $i++) {
                 $arr = @AC_GetLoggedValues($ArchiveHandlerID, $IlluminanceId, $StartTime, $EndTime, 0);
@@ -447,8 +448,12 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $sum_mol = 0;
 
                 foreach (array_reverse($arr) as $item) {
-                    $sum_mol += $item['Value'] * 0.0185 * $item['Duration'] / 1000000;
+                    $mol = $item['Value'] * 0.0185 * $item['Duration'] / 1000000;
+                    $sum_mol += $mol;
+                    $this->SendDebug(__FUNCTION__, sprintf('Day %s - %s: LogValue %s, Duration: %s s -> %s mmol (accumulated: %s mmol)', $i, date('D H:i:s', $item['TimeStamp']), $item['Value'], $item['Duration'], $mol, $sum_mol ), 0);
                 }
+
+                $DLISums[] = $sum_mol;
 
                 if ($sum_mol < $min) {
                     $DLIHints[] = 1;
@@ -461,6 +466,9 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $EndTime = strtotime('-1 day', $EndTime);
                 $StartTime = strtotime('-1 day', $StartTime);
             }
+
+            $this->SendDebug(__FUNCTION__, sprintf('--- DLI Sums: %s', print_r($DLISums, true)), 0);
+            $this->SendDebug(__FUNCTION__, sprintf('--- DLI Hints: %s', print_r($DLIHints, true)), 0);
 
             // ist die Lichtmenge an allen Tagen unter- bzw. überschritten?
             if (array_unique($DLIHints) === [1]) {
