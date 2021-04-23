@@ -423,7 +423,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
         }
         private function getDLIHint(): int
         {
-            $min = $this->GetValue('max_light_mmol');
+            $min = $this->GetValue('min_light_mmol');
             $max = $this->GetValue('max_light_mmol');
 
             if ($min === 0.0 && $max === 0.0) {
