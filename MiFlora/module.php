@@ -448,7 +448,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $sum_mol = 0;
 
                 foreach (array_reverse($arr) as $item) {
-                    $mol = $item['Value'] * 0.0185 * $item['Duration'] / 1000000;
+                    $mol = $item['Value'] * 0.0185 * $item['Duration'] / 1000;
                     $sum_mol += $mol;
                     $this->SendDebug(__FUNCTION__, sprintf('Day %s - %s: LogValue %s, Duration: %s s -> %s mmol (accumulated: %s mmol)', $i, date('D H:i:s', $item['TimeStamp']), $item['Value'], $item['Duration'], $mol, $sum_mol ), 0);
                 }
@@ -467,7 +467,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $StartTime = strtotime('-1 day', $StartTime);
             }
 
-            $this->SendDebug(__FUNCTION__, sprintf('--- DLI Sums: %s', print_r($DLISums, true)), 0);
+            $this->SendDebug(__FUNCTION__, sprintf('--- DLI Sums: %s, Min: %s, Max: %s', print_r($DLISums, true), GetValueFormatted($this->GetIDForIdent('min_light_mmol')), GetValueFormatted($this->GetIDForIdent('max_light_mmol'))), 0);
             $this->SendDebug(__FUNCTION__, sprintf('--- DLI Hints: %s', print_r($DLIHints, true)), 0);
 
             // ist die Lichtmenge an allen Tagen unter- bzw. überschritten?
