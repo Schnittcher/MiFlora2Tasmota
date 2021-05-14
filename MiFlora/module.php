@@ -157,7 +157,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $ReceiveDataFilter = $this->ReadPropertyString('Devicename');
             }
 
-            if ($this->ReadPropertyString('pid_plant') !== '') {
+            if (($this->ReadPropertyString('pid_plant') !== '') && ($this->ReadPropertyString('ClientID') !== '') && ($this->ReadPropertyString('ClientSecret') !== '')) {
                 $PlantData = $this->getDetailRequest($this->ReadPropertyString('pid_plant'));
                 if ($PlantData !== []) {
                     $this->SetValue('max_light_mmol', $PlantData['max_light_mmol']);
