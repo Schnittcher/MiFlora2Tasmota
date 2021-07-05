@@ -199,7 +199,7 @@ class Configurator extends IPSModule
 
         $Values = [['caption' => '-', 'value' => '-']];
 
-        if (isset($Plants['results'])){
+        if (isset($Plants['results'])) {
             foreach ($Plants['results'] as $Plant) {
                 $Value['caption'] = $Plant['display_pid'];
                 $Value['value'] = $Plant['pid'];
