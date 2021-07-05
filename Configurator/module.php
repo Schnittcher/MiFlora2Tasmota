@@ -197,16 +197,14 @@ class Configurator extends IPSModule
         $Plants = $this->searchRequest($PlantName);
         IPS_LogMessage('Plants', print_r($Plants, true));
 
-        $Values = [];
+        $Values = [['caption' => '-', 'value' => '-']];
 
-        $Value['caption'] = '-';
-        $Value['value'] = '-';
-        $Values[] = $Value;
-
-        foreach ($Plants['results'] as $Plant) {
-            $Value['caption'] = $Plant['display_pid'];
-            $Value['value'] = $Plant['pid'];
-            $Values[] = $Value;
+        if (isset($Plants['results'])){
+            foreach ($Plants['results'] as $Plant) {
+                $Value['caption'] = $Plant['display_pid'];
+                $Value['value'] = $Plant['pid'];
+                $Values[] = $Value;
+            }
         }
         $this->UpdateFormField('Plant', 'options', json_encode($Values));
     }
