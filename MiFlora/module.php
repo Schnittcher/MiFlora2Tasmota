@@ -450,7 +450,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 foreach (array_reverse($arr) as $item) {
                     $mol = $item['Value'] * 0.0185 * $item['Duration'] / 1000;
                     $sum_mol += $mol;
-                    $this->SendDebug(__FUNCTION__, sprintf('Day %s - %s: LogValue %s, Duration: %s s -> %s mmol (accumulated: %s mmol)', $i, date('D H:i:s', $item['TimeStamp']), $item['Value'], $item['Duration'], $mol, $sum_mol ), 0);
+                    $this->SendDebug(__FUNCTION__, sprintf('Day %s - %s: LogValue %s, Duration: %s s -> %s mmol (accumulated: %s mmol)', $i, date('D H:i:s', $item['TimeStamp']), $item['Value'], $item['Duration'], $mol, $sum_mol), 0);
                 }
 
                 $DLISums[] = $sum_mol;
