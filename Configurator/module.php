@@ -54,6 +54,9 @@ class Configurator extends IPSModule
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
         $Devices = json_decode($this->GetBuffer('Devices'), true);
 
+        $this->LogMessage($this->GetBuffer('Devices'), KL_DEBUG);
+        $this->SendDebug('Buffer :: Devices', $this->GetBuffer('Devices'), 0);
+
         $Values = [];
 
         foreach ($Devices as $key => $Device) {
