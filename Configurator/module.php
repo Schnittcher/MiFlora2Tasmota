@@ -62,7 +62,9 @@ class Configurator extends IPSModule
         foreach ($Devices as $key => $Device) {
             $instanceID = $this->getDeviceInstances($key);
 
-            $pid_plant = IPS_GetProperty($instanceID, 'pid_plant');
+            if ($instanceID != 0) {
+                $pid_plant = IPS_GetProperty($instanceID, 'pid_plant');
+            }
 
             if (array_key_exists('mac', $Device)) {
                 $mac = $Device['mac'];
