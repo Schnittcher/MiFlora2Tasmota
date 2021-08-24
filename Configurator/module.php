@@ -194,7 +194,7 @@ class Configurator extends IPSModule
         }
     }
 
-    public function searchPlant($PlantName)
+    public function searchPlant(string $PlantName)
     {
         $Plants = $this->searchRequest($PlantName);
         IPS_LogMessage('Plants', print_r($Plants, true));
@@ -211,7 +211,7 @@ class Configurator extends IPSModule
         $this->UpdateFormField('Plant', 'options', json_encode($Values));
     }
 
-    public function addPlantToSensor($Sensor, $PlantName)
+    public function addPlantToSensor(string $Sensor, string $PlantName)
     {
         IPS_LogMessage('addPlantToSensor', $Sensor . ' ' . $PlantName);
 
