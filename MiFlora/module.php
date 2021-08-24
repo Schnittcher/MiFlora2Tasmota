@@ -160,6 +160,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
             if (($this->ReadPropertyString('pid_plant') !== '') && ($this->ReadPropertyString('ClientID') !== '') && ($this->ReadPropertyString('ClientSecret') !== '')) {
                 $PlantData = $this->getDetailRequest($this->ReadPropertyString('pid_plant'));
                 if ($PlantData !== []) {
+                    $this->SendDebug('PlantData', json_encode($PlantData), true);
                     $this->SetValue('max_light_mmol', $PlantData['max_light_mmol']);
                     $this->SetValue('min_light_mmol', $PlantData['min_light_mmol']);
                     $this->SetValue('max_light_lux', $PlantData['max_light_lux']);
