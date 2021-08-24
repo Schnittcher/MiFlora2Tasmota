@@ -161,35 +161,39 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $PlantData = $this->getDetailRequest($this->ReadPropertyString('pid_plant'));
                 if ($PlantData !== []) {
                     $this->SendDebug('PlantData', json_encode($PlantData), true);
-                    $this->SetValue('max_light_mmol', $PlantData['max_light_mmol']);
-                    $this->SetValue('min_light_mmol', $PlantData['min_light_mmol']);
-                    $this->SetValue('max_light_lux', $PlantData['max_light_lux']);
-                    $this->SetValue('min_light_lux', $PlantData['min_light_lux']);
-                    $this->SetValue('max_temp', $PlantData['max_temp']);
-                    $this->SetValue('min_temp', $PlantData['min_temp']);
-                    $this->SetValue('max_env_humid', $PlantData['max_env_humid']);
-                    $this->SetValue('min_env_humid', $PlantData['min_env_humid']);
-                    $this->SetValue('max_soil_moist', $PlantData['max_soil_moist']);
-                    $this->SetValue('min_soil_moist', $PlantData['min_soil_moist']);
-                    $this->SetValue('max_soil_ec', $PlantData['max_soil_ec']);
-                    $this->SetValue('min_soil_ec', $PlantData['min_soil_ec']);
+                    if ($PlantData['detail'] != 'Not found.') {
+                        $this->SetValue('max_light_mmol', $PlantData['max_light_mmol']);
+                        $this->SetValue('min_light_mmol', $PlantData['min_light_mmol']);
+                        $this->SetValue('max_light_lux', $PlantData['max_light_lux']);
+                        $this->SetValue('min_light_lux', $PlantData['min_light_lux']);
+                        $this->SetValue('max_temp', $PlantData['max_temp']);
+                        $this->SetValue('min_temp', $PlantData['min_temp']);
+                        $this->SetValue('max_env_humid', $PlantData['max_env_humid']);
+                        $this->SetValue('min_env_humid', $PlantData['min_env_humid']);
+                        $this->SetValue('max_soil_moist', $PlantData['max_soil_moist']);
+                        $this->SetValue('min_soil_moist', $PlantData['min_soil_moist']);
+                        $this->SetValue('max_soil_ec', $PlantData['max_soil_ec']);
+                        $this->SetValue('min_soil_ec', $PlantData['min_soil_ec']);
 
-                    $PlantImage = file_get_contents($PlantData['image_url']);
+                        $PlantImage = file_get_contents($PlantData['image_url']);
 
-                    $PlantImageID = @IPS_GetObjectIDByIdent('PlantImage', $this->InstanceID);
-                    if ($PlantImageID === false) {
-                        $PlantImageID = IPS_CreateMedia(MEDIATYPE_IMAGE);
-                        IPS_SetParent($PlantImageID, $this->InstanceID);
-                        IPS_SetIdent($PlantImageID, 'PlantImage');
-                        IPS_SetName($PlantImageID, $this->Translate('Image'));
-                        IPS_SetPosition($PlantImageID, -5);
-                        IPS_SetMediaCached($PlantImageID, true);
-                        $filename = 'media' . DIRECTORY_SEPARATOR . 'PlantImage_' . $this->InstanceID . '.png';
-                        IPS_SetMediaFile($PlantImageID, $filename, false);
-                        $this->SendDebug('Create Media', $filename, 0);
+                        $PlantImageID = @IPS_GetObjectIDByIdent('PlantImage', $this->InstanceID);
+                        if ($PlantImageID === false) {
+                            $PlantImageID = IPS_CreateMedia(MEDIATYPE_IMAGE);
+                            IPS_SetParent($PlantImageID, $this->InstanceID);
+                            IPS_SetIdent($PlantImageID, 'PlantImage');
+                            IPS_SetName($PlantImageID, $this->Translate('Image'));
+                            IPS_SetPosition($PlantImageID, -5);
+                            IPS_SetMediaCached($PlantImageID, true);
+                            $filename = 'media' . DIRECTORY_SEPARATOR . 'PlantImage_' . $this->InstanceID . '.png';
+                            IPS_SetMediaFile($PlantImageID, $filename, false);
+                            $this->SendDebug('Create Media', $filename, 0);
+                        }
+
+                        IPS_SetMediaContent($PlantImageID, base64_encode($PlantImage));
+                    } else {
+                        $this->SendDebug('PlantData', 'No Data found!', true);
                     }
-
-                    IPS_SetMediaContent($PlantImageID, base64_encode($PlantImage));
                 }
             }
 
