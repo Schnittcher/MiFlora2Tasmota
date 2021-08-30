@@ -161,7 +161,14 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $PlantData = $this->getDetailRequest($this->ReadPropertyString('pid_plant'));
                 if ($PlantData !== []) {
                     $this->SendDebug('PlantData', json_encode($PlantData), true);
-                    if ($PlantData['detail'] != 'Not found.') {
+                    if (array_key_exists('detail', $PlantData)) {
+                        if ($PlantData['detail'] != 'Not found.') {
+                            $this->SendDebug('PlantData', 'No Data found!', true);
+                            return;
+                        } else {
+                            $this->SendDebug('PlanData', 'Unexpected Error: ' . $PlantData['detail'], true);
+                        }
+                    } else {
                         $this->SetValue('max_light_mmol', $PlantData['max_light_mmol']);
                         $this->SetValue('min_light_mmol', $PlantData['min_light_mmol']);
                         $this->SetValue('max_light_lux', $PlantData['max_light_lux']);
@@ -191,8 +198,6 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                         }
 
                         IPS_SetMediaContent($PlantImageID, base64_encode($PlantImage));
-                    } else {
-                        $this->SendDebug('PlantData', 'No Data found!', true);
                     }
                 }
             }
