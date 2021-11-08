@@ -216,16 +216,16 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $Payload = json_decode($data['Payload'], true);
                 foreach ($Payload as $key => $Device) {
                     if ($key === $this->ReadPropertyString('Devicename')) {
-                        if (array_key_exists('Temperature')) {
+                        if (array_key_exists('Temperature', $Device)) {
                             $this->SetValueIfNotNull(self::VAR_TEMPERATURE, $Device['Temperature']);
                         }
-                        if (array_key_exists('Illuminance')) {
+                        if (array_key_exists('Illuminance', $Device)) {
                             $this->SetValueIfNotNull(self::VAR_ILLUMINANCE, $Device['Illuminance']);
                         }
-                        if (array_key_exists('Moisture')) {
+                        if (array_key_exists('Moisture', $Device)) {
                             $this->SetValueIfNotNull('Moisture', $Device['Moisture']);
                         }
-                        if (array_key_exists('Fertility')) {
+                        if (array_key_exists('Fertility', $Device)) {
                             $this->SetValueIfNotNull('Fertility', $Device['Fertility']);
                         }
                         if (array_key_exists('Battery', $Device)) {
