@@ -216,21 +216,30 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                 $Payload = json_decode($data['Payload'], true);
                 foreach ($Payload as $key => $Device) {
                     if ($key === $this->ReadPropertyString('Devicename')) {
-                        $this->SetValueIfNotNull(self::VAR_TEMPERATURE, $Device['Temperature']);
-                        $this->SetValueIfNotNull(self::VAR_ILLUMINANCE, $Device['Illuminance']);
-                        $this->SetValueIfNotNull('Moisture', $Device['Moisture']);
-                        $this->SetValueIfNotNull('Fertility', $Device['Fertility']);
+                        if (array_key_exists('Temperature')) {
+                            $this->SetValueIfNotNull(self::VAR_TEMPERATURE, $Device['Temperature']);
+                        }
+                        if (array_key_exists('Illuminance')) {
+                            $this->SetValueIfNotNull(self::VAR_ILLUMINANCE, $Device['Illuminance']);
+                        }
+                        if (array_key_exists('Moisture')) {
+                            $this->SetValueIfNotNull('Moisture', $Device['Moisture']);
+                        }
+                        if (array_key_exists('Fertility')) {
+                            $this->SetValueIfNotNull('Fertility', $Device['Fertility']);
+                        }
                         if (array_key_exists('Battery', $Device)) {
                             $this->SetValueIfNotNull('Battery', $Device['Battery']);
                         }
-                        if ($this->ReadPropertyBoolean('MAC-Address')) {
+                        if ($this->ReadPropertyBoolean('MAC-Address') && array_key_exists('mac', $Device)) {
                             $this->SetValueIfNotNull('MAC', $Device['mac']);
                         }
                         if ($this->ReadPropertyBoolean('Firmware') && array_key_exists('Firmware', $Device)) {
                             $this->SetValueIfNotNull('Firmware', $Device['Firmware']);
                         }
-                        $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
-
+                        if (array_key_exists('RSSI', $Device)) {
+                            $this->SetValueIfNotNull('RSSI', $Device['RSSI']);
+                        }
                         if (array_key_exists('Time', $Payload)) {
                             $date = new DateTime($Payload['Time']);
                             $this->SetValueIfNotNull('Time', $date->getTimestamp());
