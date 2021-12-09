@@ -64,7 +64,9 @@ trait PlantbookHTTPHelper
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'https://open.plantbook.io/api/v1/plant/detail/' . $plantPid . '/');
+        $URL = 'https://open.plantbook.io/api/v1/plant/detail/' . strtolower(htmlspecialchars($plantPid)) . '/';
+        $URL = str_replace(' ', '%20', $URL);
+        curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
@@ -73,6 +75,7 @@ trait PlantbookHTTPHelper
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         $resultAPI = curl_exec($ch);
+
         if (curl_errno($ch)) {
             echo 'Error:' . curl_error($ch);
             return [];

@@ -121,6 +121,10 @@ class Configurator extends IPSModule
                 $RSSI = '';
             }
 
+            if (array_key_exists('pid_plant', $Device)) {
+                $pid_plant = $Device['pid_plant'];
+            }
+
             $ValueExpertFilter = false;
             if ($this->ReadPropertyString('Filter') != '') {
                 $ValueExpertFilter = true;
@@ -197,7 +201,13 @@ class Configurator extends IPSModule
     public function searchPlant(string $PlantName)
     {
         $Plants = $this->searchRequest($PlantName);
-        IPS_LogMessage('Plants', print_r($Plants, true));
+
+        if (array_key_exists('detail', $Plants)) {
+            if ($Plants['detail'] == 'Authentication credentials were not provided.') {
+                $this->LogMessage($Plants['detail'], KL_ERROR);
+                $this->SetStatus(201);
+            }
+        }
 
         $Values = [['caption' => '-', 'value' => '-']];
 

@@ -21,7 +21,7 @@
             "Max Light Lux": "Helligkeit max. (lx)",
             "Max Light mmol": "Lichtmenge max. (mmol)",
             "Max Soil EC": "Bodenleitfähigkeit max.",
-            "Max Soil moist":"Bodenfeuchtigkeit max.",
+            "Max Soil moist": "Bodenfeuchtigkeit max.",
             "Max Temperature": "Temperatur max.",
             "Min ENV Humid": "Luftfeuchtigkeit min.",
             "Min Light Lux": "Helligkeit min. (lx)",
@@ -50,7 +50,9 @@
             "too bright": "zu hell",
             "too dry": "zu trocken",
             "too wet": "zu nass",
-            "Last Sensor Update": "Letzte Sensor Aktualisierung"
+            "Last Sensor Update": "Letzte Sensor Aktualisierung",
+            "Open Plantbook error, see logs!": "OpenPlantBook-Fehler, siehe Logs!",
+            "Active!": "Aktiv!"
         }
     }
 }

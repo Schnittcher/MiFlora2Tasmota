@@ -18,7 +18,9 @@
             "Search": "Suche",
             "Plant": "Pflanze",
             "Unknown": "Unbekannt",
-            "Add to Sensor": "dem ausgewählten Gerät zuordnen"
+            "Add to Sensor": "dem ausgewählten Gerät zuordnen",
+            "Open Plantbook error, see logs!": "OpenPlantBook-Fehler, siehe Logs!",
+            "Active!": "Aktiv!"
         }
     }
 }

@@ -1,129 +1,147 @@
 {
-  "elements":[
-     {
-        "type":"ValidationTextBox",
-        "name":"Topic",
-        "caption":"Tasmota MQTT Topic"
-     },
-     {
-        "type":"ValidationTextBox",
-        "name":"FullTopic",
-        "caption":"Full Topic"
-     },
-     {
-        "type":"ExpansionPanel",
-        "caption":"Expert Settings",
-        "items":[
-           {
-              "type":"ValidationTextBox",
-              "name":"Filter",
-              "caption":"Data Filter"
-           },
-           { "type": "Label",
-            "caption": "Open Plantbook Settings" },
-          {
-           "type":"ValidationTextBox",
-           "name":"ClientID",
-           "caption":"ClientID"
-           },
-           {
-              "type":"ValidationTextBox",
-              "name":"ClientSecret",
-              "caption":"Client Secret"
-           }
+   "elements": [
+      {
+         "type": "ValidationTextBox",
+         "name": "Topic",
+         "caption": "Tasmota MQTT Topic"
+      },
+      {
+         "type": "ValidationTextBox",
+         "name": "FullTopic",
+         "caption": "Full Topic"
+      },
+      {
+         "type": "ExpansionPanel",
+         "caption": "Expert Settings",
+         "items": [
+            {
+               "type": "ValidationTextBox",
+               "name": "Filter",
+               "caption": "Data Filter"
+            },
+            {
+               "type": "Label",
+               "caption": "Open Plantbook Settings"
+            },
+            {
+               "type": "ValidationTextBox",
+               "name": "ClientID",
+               "caption": "ClientID"
+            },
+            {
+               "type": "ValidationTextBox",
+               "name": "ClientSecret",
+               "caption": "Client Secret"
+            }
          ]
-     }
-  ],
-  "actions":[
-     {
-        "type":"Configurator",
-        "name":"Configurator",
-        "caption":"MiFlora Devices",
-        "delete":true,
-        "sort":{
-           "column":"name",
-           "direction":"ascending"
-        },
-        "columns":[
-           {
-              "caption":"Devicename",
-              "name":"name",
-              "width":"auto"
-           },
-           {
-            "caption":"Plant Name",
-            "name":"pid_plant",
-            "width":"auto"
+      }
+   ],
+   "actions": [
+      {
+         "type": "Configurator",
+         "name": "Configurator",
+         "caption": "MiFlora Devices",
+         "delete": true,
+         "sort": {
+            "column": "name",
+            "direction": "ascending"
          },
-           {
-            "caption":"Mac Address",
-            "name":"mac",
-            "width":"150px"
-           },
-           {
-            "caption":"MQTT Topic",
-            "name":"MQTTTopic",
-            "width":"150px"
-           },
-           {
-              "caption":"Temperature",
-              "name":"Temperature",
-              "width":"100px"
-           },
-           {
-              "caption":"Illuminance",
-              "name":"Illuminance",
-              "width":"150px"
-           },
-           {
-              "caption":"Moisture",
-              "name":"Moisture",
-              "width":"150px"
-           },
-           {
-              "caption":"Fertility",
-              "name":"Fertility",
-              "width":"150px"
-           },
-           {
-            "caption":"Firmware",
-            "name":"Firmware",
-            "width":"150px"
-           },
-           {
-            "caption":"Battery",
-            "name":"Battery",
-            "width":"150px"
-           },
-           {
-              "caption":"RSSI",
-              "name":"RSSI",
-              "width":"150px"
-           }
-        ],
-        "values":[
-           
-        ]
-     },
-     { "type": "ValidationTextBox",
-       "name": "PlantSearch",
-        "caption": "Search in Open Plantbook"
-     },
-     { "type": "Button",
-       "caption": "Search",
-       "onClick": "M2T_searchPlant($id,$PlantSearch);"
-     },
-     { "type": "Select", "name": "Plant", "caption": "Plant",
-      "options": [
-          { "caption": "-", "value": "-" }
-      ]
-     },
-     { "type": "Button",
-      "caption": "Add to Sensor",
-      "onClick": "M2T_addPlantToSensor($id,$Configurator['name'],$Plant);"
-     }
-  ],
-  "status":[
-     
-  ]
+         "columns": [
+            {
+               "caption": "Devicename",
+               "name": "name",
+               "width": "auto"
+            },
+            {
+               "caption": "Plant Name",
+               "name": "pid_plant",
+               "width": "auto"
+            },
+            {
+               "caption": "Mac Address",
+               "name": "mac",
+               "width": "150px"
+            },
+            {
+               "caption": "MQTT Topic",
+               "name": "MQTTTopic",
+               "width": "150px"
+            },
+            {
+               "caption": "Temperature",
+               "name": "Temperature",
+               "width": "100px"
+            },
+            {
+               "caption": "Illuminance",
+               "name": "Illuminance",
+               "width": "150px"
+            },
+            {
+               "caption": "Moisture",
+               "name": "Moisture",
+               "width": "150px"
+            },
+            {
+               "caption": "Fertility",
+               "name": "Fertility",
+               "width": "150px"
+            },
+            {
+               "caption": "Firmware",
+               "name": "Firmware",
+               "width": "150px"
+            },
+            {
+               "caption": "Battery",
+               "name": "Battery",
+               "width": "150px"
+            },
+            {
+               "caption": "RSSI",
+               "name": "RSSI",
+               "width": "150px"
+            }
+         ],
+         "values": []
+      },
+      {
+         "type": "ValidationTextBox",
+         "name": "PlantSearch",
+         "caption": "Search in Open Plantbook"
+      },
+      {
+         "type": "Button",
+         "caption": "Search",
+         "onClick": "M2T_searchPlant($id,$PlantSearch);"
+      },
+      {
+         "type": "Select",
+         "name": "Plant",
+         "caption": "Plant",
+         "options": [
+            {
+               "caption": "-",
+               "value": "-"
+            }
+         ]
+      },
+      {
+         "type": "Button",
+         "caption": "Add to Sensor",
+         "onClick": "M2T_addPlantToSensor($id,$Configurator['name'],$Plant);"
+      }
+   ],
+   "status": [
+      {
+         "code": 201,
+         "icon": "inactive",
+         "caption": "Open Plantbook error, see logs!"
+       },
+       {
+         "code": 102,
+         "icon": "active",
+         "caption": "Active!"
+       }
+   ]
 }

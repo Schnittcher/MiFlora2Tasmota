@@ -159,6 +159,12 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
 
             if (($this->ReadPropertyString('pid_plant') !== '') && ($this->ReadPropertyString('ClientID') !== '') && ($this->ReadPropertyString('ClientSecret') !== '')) {
                 $PlantData = $this->getDetailRequest($this->ReadPropertyString('pid_plant'));
+                if (array_key_exists('detail', $PlantData)) {
+                    if ($PlantData['detail'] == 'Authentication credentials were not provided.') {
+                        $this->LogMessage($PlantData['detail'], KL_ERROR);
+                        $this->SetStatus(201);
+                    }
+                }
                 if ($PlantData !== []) {
                     $this->SendDebug('PlantData', json_encode($PlantData), true);
                     if (array_key_exists('detail', $PlantData)) {
@@ -198,6 +204,7 @@ require_once __DIR__ . '/../libs/VariableProfileHelper.php';
                         }
 
                         IPS_SetMediaContent($PlantImageID, base64_encode($PlantImage));
+                        $this->SetStatus(102);
                     }
                 }
             }
