@@ -170,6 +170,11 @@ class Configurator extends IPSModule
         $this->SendDebug('JSON', $JSONString, 0);
         $data = json_decode($JSONString);
 
+        //Für MQTT Fix in IPS Version 6.3
+        if (IPS_GetKernelDate() > 1670886000) {
+            $data->Payload = utf8_decode($data->Payload);
+        }
+
         if (property_exists($data, 'Topic')) {
             if (fnmatch('*/SENSOR', $data->Topic)) {
                 if (fnmatch('*Flora*', $data->Payload)) {
