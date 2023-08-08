@@ -126,7 +126,7 @@ require_once __DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.
             //Never delete this line!
             parent::ApplyChanges();
 
-            if ($this->ReadPropertyBoolean(self::PROP_DLI_HINT)) {
+            if ($this->ReadPropertyBoolean(self::PROP_TEMPERATURE_HINT)) {
                 $this->RegisterVariableInteger(self::VAR_TEMPERATURE_HINT, $this->Translate('Temperature Hint'), 'M2T.TemperatureHint', 19);
                 AC_SetLoggingStatus(IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0], $this->GetIDForIdent(self::VAR_TEMPERATURE), true);
             }
