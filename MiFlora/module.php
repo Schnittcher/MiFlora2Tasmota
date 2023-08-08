@@ -304,7 +304,7 @@ require_once __DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.
             }
 
             //tägliche Lichtmenge
-            if ($this->ReadPropertyBoolean(self::PROP_TEMPERATURE_HINT)) {
+            if ($this->ReadPropertyBoolean(self::PROP_DLI_HINT)) {
                 $hint = $this->getDLIHint();
 
                 if ($hint !== -1) {
